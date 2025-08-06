@@ -7,7 +7,68 @@ package db
 
 import (
 	"context"
+	"database/sql"
 )
+
+const getEinkaufsliste = `-- name: GetEinkaufsliste :many
+SELECT  
+Mitarbeiter.id, Mitarbeiter.name, Einkauf.Dinge, Einkauf.Paypal, 
+Einkauf.Abonniert, Einkauf.Geld, Einkauf.Pfand, Einkauf.Abgeschickt, 
+Einkauf.Bild1, Einkauf.Bild2, Einkauf.Bild3 
+FROM Mitarbeiter 
+LEFT JOIN Einkauf ON Mitarbeiter.einkaufId = Einkauf.id 
+WHERE DATEDIFF(NOW(), Einkauf.Abgeschickt) = 1 
+OR Einkauf.Abonniert
+`
+
+type GetEinkaufslisteRow struct {
+	ID          string
+	Name        string
+	Dinge       sql.NullString
+	Paypal      sql.NullBool
+	Abonniert   sql.NullBool
+	Geld        sql.NullString
+	Pfand       sql.NullString
+	Abgeschickt sql.NullTime
+	Bild1       sql.NullString
+	Bild2       sql.NullString
+	Bild3       sql.NullString
+}
+
+func (q *Queries) GetEinkaufsliste(ctx context.Context) ([]GetEinkaufslisteRow, error) {
+	rows, err := q.db.QueryContext(ctx, getEinkaufsliste)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetEinkaufslisteRow
+	for rows.Next() {
+		var i GetEinkaufslisteRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Dinge,
+			&i.Paypal,
+			&i.Abonniert,
+			&i.Geld,
+			&i.Pfand,
+			&i.Abgeschickt,
+			&i.Bild1,
+			&i.Bild2,
+			&i.Bild3,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
 
 const getGeburtstagsliste = `-- name: GetGeburtstagsliste :many
 SELECT id, name, short, image, sex, focus, mail, abteilungid, einkaufid, azubi, geburtstag, gruppenwahl, homeoffice, mobil_business, mobil_privat, telefon_business, telefon_intern_1, telefon_intern_2, telefon_privat FROM Mitarbeiter 

@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"math"
 	"sort"
 	"time"
@@ -37,11 +36,6 @@ func (a *App) startup(ctx context.Context) {
 
 	a.ctx = ctx
 	a.db = queries
-}
-
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
 type Geburtstag struct {
@@ -111,4 +105,12 @@ func (a *App) GetMitarbeiter() *Geburtstagsliste {
 		Zukunft:   Zukunft,
 		Vergangen: Vergangen,
 	}
+}
+
+func (a *App) GetEinkaufsliste() []db.GetEinkaufslisteRow {
+	ma, err := a.db.GetEinkaufsliste(a.ctx)
+	if err != nil {
+		return nil
+	}
+	return ma
 }
