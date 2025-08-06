@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "Viktor",
+  "outputfilename": "Viktor",
+  "frontend:install": "bun install",
+  "frontend:build": "bun run build",
+  "frontend:dev:watcher": "bun dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "jayzone91",
+    "email": "register@j4yz0n3.de"
+  }
+}
