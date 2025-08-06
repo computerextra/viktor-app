@@ -14,9 +14,6 @@
   box-sizing: border-box;
 }
 
-html {
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -27,9 +24,6 @@ body {
   font-weight: 400;
   font-size: 100%;
   line-height: 1.5;
-}
-
-#app {
 }
 
 h1,
@@ -54,6 +48,11 @@ button {
 }
 .panel {
   padding: 1.5rem;
+  border: 2px solid var(--bg-3);
+  position: relative;
+}
+
+.panel-without-p {
   border: 2px solid var(--bg-3);
   position: relative;
 }
@@ -182,4 +181,22 @@ main {
 }
 .forecast-weather {
   color: var(--txt-3);
+}
+
+.link {
+  text-decoration: none;
+}
+
+.link:hover span {
+  color: var(--txt-2);
+}
+
+span {
+  color: var(--txt-3);
+}
+
+.column {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
 }
