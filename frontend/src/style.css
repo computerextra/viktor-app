@@ -147,3 +147,39 @@ main {
   line-height: 2rem;
   margin: 0;
 }
+
+.value {
+  color: var(--txt-1);
+}
+
+.temp {
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--txt-1);
+  line-height: 2.625rem;
+}
+.description {
+  font-size: 1.25rem;
+  color: var(--txt-3);
+}
+.value {
+  color: var(--txt-1);
+}
+.stats {
+  display: flex;
+  gap: 1.5rem;
+}
+.forecast {
+  display: flex;
+  gap: 1.5rem;
+}
+.forecast-time {
+  text-align: end;
+}
+.forecast-temp {
+  text-align: end;
+  color: var(--txt-1);
+}
+.forecast-weather {
+  color: var(--txt-3);
+}

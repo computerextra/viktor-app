@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Clock from "./Components/Clock";
+import Stats from "./Components/Stats";
+import Weather from "./Components/Weather";
 
 export default function Layout() {
   const [showSettings, setShowSettings] = useState(false);
@@ -8,10 +10,10 @@ export default function Layout() {
       <div className="container">
         <div className="top">
           <Clock />
-          {/* Stats */}
+          <Stats />
         </div>
         <div className="widgets">
-          {/* Weather */}
+          <Weather />
           {/* TODOist */}
         </div>
         {/* Links */}
