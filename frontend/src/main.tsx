@@ -1,14 +1,21 @@
-import React from 'react'
-import {createRoot} from 'react-dom/client'
-import './style.css'
-import App from './App'
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { HashRouter, Route, Routes } from "react-router";
+import Layout from "./Layout";
+import "./style.css";
 
-const container = document.getElementById('root')
+const container = document.getElementById("root");
 
-const root = createRoot(container!)
+const root = createRoot(container!);
 
 root.render(
-    <React.StrictMode>
-        <App/>
-    </React.StrictMode>
-)
+  <React.StrictMode>
+    <HashRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<>Home</>} />
+        </Route>
+      </Routes>
+    </HashRouter>
+  </React.StrictMode>
+);
