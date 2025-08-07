@@ -1,18 +1,20 @@
 import { Outlet } from "react-router";
-import Clock from "./Components/Clock";
-import Links from "./Components/Links";
-import Stats from "./Components/Stats";
+import Clock from "./components/Clock";
+import Links from "./components/Links";
+import Stats from "./components/Stats";
 
 export default function Layout() {
   return (
-    <main>
-      <div className="container">
+    <main className="container mx-auto flex flex-col mt-5">
+      <div className="flex flex-col gap-4 w-full">
         <Links />
-        <div className="top">
-          <Clock />
-          <Stats />
+        <div className="container mx-auto print:hidden">
+          <div className="grid grid-cols-2 gap-4">
+            <Clock />
+            <Stats />
+          </div>
         </div>
-        <div className="panel">
+        <div className="mt-5">
           <Outlet />
         </div>
       </div>

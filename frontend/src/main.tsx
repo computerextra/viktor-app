@@ -1,23 +1,22 @@
-import React from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router";
+import "./index.css";
 import Layout from "./Layout";
-import Einkauf from "./Pages/Einkauf";
+
+import Eingabe from "./Pages/Einkauf/Eingabe";
+import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
-import "./style.css";
 
-const container = document.getElementById("root");
-
-const root = createRoot(container!);
-
-root.render(
-  <React.StrictMode>
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
     <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="Einkauf">
             <Route index element={<Einkauf />} />
+            <Route path=":id" element={<Eingabe />} />
           </Route>
           <Route path="Mitarbeiter">
             <Route index element={<>Mitarbeiter</>} />
@@ -58,5 +57,5 @@ root.render(
         </Route>
       </Routes>
     </HashRouter>
-  </React.StrictMode>
+  </StrictMode>
 );

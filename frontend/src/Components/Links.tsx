@@ -61,12 +61,22 @@ const NavLinks = [
 
 export default function Links() {
   return (
-    <div className="panel">
+    <div className="panel print:hidden">
       <div className="panel-label">Links</div>
-      <div className="column">
+      <div className="grid grid-cols-7 mt-2">
         {NavLinks.map((link, idx) => (
-          <NavLink key={idx} to={link.href} className="link">
-            <span>&gt;</span>
+          <NavLink
+            key={idx}
+            to={link.href}
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "underline"
+                : isActive
+                ? "underline"
+                : "hover:underline"
+            }
+          >
+            <span className="pe-1">&gt;</span>
             {link.name}
           </NavLink>
         ))}

@@ -1,6 +1,6 @@
+import { GetGeburtstagsliste } from "@/wailsjs/go/main/App";
+import type { main } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
-import { GetMitarbeiter } from "../../wailsjs/go/main/App";
-import { main } from "../../wailsjs/go/models";
 
 export default function Geburtstagsliste() {
   const [Mitarbeiter, setMitarbeiter] = useState<
@@ -9,7 +9,7 @@ export default function Geburtstagsliste() {
 
   useEffect(() => {
     (async () => {
-      const res = await GetMitarbeiter();
+      const res = await GetGeburtstagsliste();
       setMitarbeiter(res);
     })();
   }, []);
@@ -18,62 +18,78 @@ export default function Geburtstagsliste() {
     <>
       <h2>Geburtstagsliste</h2>
       {Mitarbeiter?.Heute && Mitarbeiter.Heute.length > 0 && (
-        <div className="panel">
-          <h3>Heutige Geburtstage</h3>
-          {Mitarbeiter.Heute.map((ma) => (
-            <p key={ma.Name}>{ma.Name}</p>
-          ))}
+        <div className="panel mt-5">
+          <div className="panel-label">Heutige Geburtstage</div>
+          <div className="p-2">
+            {Mitarbeiter.Heute.map((ma) => (
+              <h1 key={ma.Name}>{ma.Name}</h1>
+            ))}
+          </div>
         </div>
       )}
       {Mitarbeiter?.Zukunft && Mitarbeiter.Zukunft.length > 0 && (
-        <>
-          <h3>Zukünftige Geburtstage</h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "1rem",
-            }}
-          >
-            {Mitarbeiter.Zukunft.map((ma) => {
-              const d = new Date(ma.Date);
-              const day = d.toLocaleDateString("de-de", {
-                day: "2-digit",
-                month: "2-digit",
-              });
-              return (
-                <div key={ma.Name} className="panel-without-p">
-                  {ma.Name} - {day} -&gt; In {ma.Diff * -1} Tagen
-                </div>
-              );
-            })}
+        <div className="panel mt-4">
+          <div className="panel-label">Zukünftige Geburtstage</div>
+          <div className="p-2">
+            <table>
+              <thead>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </thead>
+              <tbody>
+                {Mitarbeiter.Zukunft.map((ma) => {
+                  const d = new Date(ma.Date);
+                  const day = d.toLocaleDateString("de-de", {
+                    day: "2-digit",
+                    month: "2-digit",
+                  });
+                  return (
+                    <tr key={ma.Name}>
+                      <td className="pe-10">{ma.Name}</td>
+                      <td className="pe-10">{day}</td>
+                      <td>In {ma.Diff * -1} Tagen</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        </>
+        </div>
       )}
       {Mitarbeiter?.Vergangen && Mitarbeiter.Vergangen.length > 0 && (
-        <>
-          <h3>Vergangene Geburtstage</h3>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "1rem",
-            }}
-          >
-            {Mitarbeiter.Vergangen.map((ma) => {
-              const d = new Date(ma.Date);
-              const day = d.toLocaleDateString("de-de", {
-                day: "2-digit",
-                month: "2-digit",
-              });
-              return (
-                <div key={ma.Name} className="panel-without-p">
-                  {ma.Name} - {day} -&gt; Vor {ma.Diff} Tagen
-                </div>
-              );
-            })}
+        <div className="panel mt-4">
+          <div className="panel-label">Vergangene Geburtstage</div>
+          <div className="p-2">
+            <table>
+              <thead>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </thead>
+              <tbody>
+                {Mitarbeiter.Vergangen.map((ma) => {
+                  const d = new Date(ma.Date);
+                  const day = d.toLocaleDateString("de-de", {
+                    day: "2-digit",
+                    month: "2-digit",
+                  });
+                  return (
+                    <tr key={ma.Name}>
+                      <td className="pe-10">{ma.Name}</td>
+                      <td className="pe-10">{day}</td>
+                      <td>Vor {ma.Diff} Tagen</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        </>
+        </div>
       )}
     </>
   );

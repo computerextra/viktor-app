@@ -18,10 +18,13 @@ export default function Stats() {
 
       if (currentTime >= lastTime + 1000) {
         setfps(framecount);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         framecount = 0;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         lastTime = currentTime;
       }
 
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       fpsAnimationId = requestAnimationFrame(updateFps);
     }
 
@@ -61,6 +64,7 @@ export default function Stats() {
         });
         setLatency(Math.round(performance.now() - start));
       } catch (error) {
+        console.error(error);
         setLatency(null);
       }
     }
@@ -93,18 +97,23 @@ export default function Stats() {
   return (
     <div className="panel">
       <div className="panel-label">Stats</div>
-      <div>
-        load <span className="value">{loadTime} ms</span>
+      <div className="grid grid-cols-2 mt-1">
+        <span>load</span>
+        <span className="text-slate-400">{loadTime} ms</span>
       </div>
-      <div>
-        ping <span className="value">{latency || "?"} ms</span>
+      <div className="grid grid-cols-2">
+        <span>ping</span>
+        <span className="text-slate-400">{latency || "?"} ms</span>
       </div>
-      <div>
-        fps <span className="value">{fps}</span>
+      <div className="grid grid-cols-2">
+        <span>fps</span>
+        <span className="text-slate-400">{fps}</span>
       </div>
-      <div>
-        <span className="value">{viewportWidth}</span> x{" "}
-        <span className="value">{viewportHeight}</span>
+      <div className="grid grid-cols-2">
+        <span>viewport</span>
+        <span className="text-slate-400">
+          {viewportWidth}x{viewportHeight} px
+        </span>
       </div>
     </div>
   );

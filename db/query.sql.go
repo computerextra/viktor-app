@@ -8,7 +8,122 @@ package db
 import (
 	"context"
 	"database/sql"
+	"time"
 )
+
+const checkEinkauf = `-- name: CheckEinkauf :one
+SELECT Einkauf.id 
+from Mitarbeiter 
+RIGHT JOIN Einkauf ON Mitarbeiter.einkaufId = Einkauf.id 
+WHERE Mitarbeiter.id = ? 
+LIMIT 1
+`
+
+func (q *Queries) CheckEinkauf(ctx context.Context, id string) (string, error) {
+	row := q.db.QueryRowContext(ctx, checkEinkauf, id)
+	err := row.Scan(&id)
+	return id, err
+}
+
+const createEinkauf = `-- name: CreateEinkauf :exec
+INSERT INTO Einkauf 
+(id, Paypal, Abonniert, Geld, Pfand, Dinge, Bild1, Bild2, Bild3, Abgeschickt) 
+VALUES 
+(?,?,?,?,?,?,?,?,?,?)
+`
+
+type CreateEinkaufParams struct {
+	ID          string
+	Paypal      bool
+	Abonniert   bool
+	Geld        sql.NullString
+	Pfand       sql.NullString
+	Dinge       string
+	Bild1       sql.NullString
+	Bild2       sql.NullString
+	Bild3       sql.NullString
+	Abgeschickt time.Time
+}
+
+func (q *Queries) CreateEinkauf(ctx context.Context, arg CreateEinkaufParams) error {
+	_, err := q.db.ExecContext(ctx, createEinkauf,
+		arg.ID,
+		arg.Paypal,
+		arg.Abonniert,
+		arg.Geld,
+		arg.Pfand,
+		arg.Dinge,
+		arg.Bild1,
+		arg.Bild2,
+		arg.Bild3,
+		arg.Abgeschickt,
+	)
+	return err
+}
+
+const deleteEinkauf = `-- name: DeleteEinkauf :exec
+UPDATE Einkauf SET Abgeschickt=?, Abonniert=? WHERE id=?
+`
+
+type DeleteEinkaufParams struct {
+	Abgeschickt time.Time
+	Abonniert   bool
+	ID          string
+}
+
+func (q *Queries) DeleteEinkauf(ctx context.Context, arg DeleteEinkaufParams) error {
+	_, err := q.db.ExecContext(ctx, deleteEinkauf, arg.Abgeschickt, arg.Abonniert, arg.ID)
+	return err
+}
+
+const getEinkauf = `-- name: GetEinkauf :one
+SELECT 
+Mitarbeiter.id, Mitarbeiter.name, 
+Einkauf.id as Einkauf_Id, 
+Einkauf.Paypal, Einkauf.Abonniert, 
+Einkauf.Geld, Einkauf.Pfand, 
+Einkauf.Dinge, Einkauf.Abgeschickt,
+Einkauf.Bild1, Einkauf.Bild2, Einkauf.Bild3
+FROM Mitarbeiter 
+LEFT JOIN Einkauf ON Mitarbeiter.einkaufId = Einkauf.id 
+WHERE Mitarbeiter.id = ? 
+LIMIT 1
+`
+
+type GetEinkaufRow struct {
+	ID          string
+	Name        string
+	EinkaufID   sql.NullString
+	Paypal      sql.NullBool
+	Abonniert   sql.NullBool
+	Geld        sql.NullString
+	Pfand       sql.NullString
+	Dinge       sql.NullString
+	Abgeschickt sql.NullTime
+	Bild1       sql.NullString
+	Bild2       sql.NullString
+	Bild3       sql.NullString
+}
+
+func (q *Queries) GetEinkauf(ctx context.Context, id string) (GetEinkaufRow, error) {
+	row := q.db.QueryRowContext(ctx, getEinkauf, id)
+	var i GetEinkaufRow
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.EinkaufID,
+		&i.Paypal,
+		&i.Abonniert,
+		&i.Geld,
+		&i.Pfand,
+		&i.Dinge,
+		&i.Abgeschickt,
+		&i.Bild1,
+		&i.Bild2,
+		&i.Bild3,
+	)
+	return i, err
+}
 
 const getEinkaufsliste = `-- name: GetEinkaufsliste :many
 SELECT  
@@ -70,13 +185,13 @@ func (q *Queries) GetEinkaufsliste(ctx context.Context) ([]GetEinkaufslisteRow, 
 	return items, nil
 }
 
-const getGeburtstagsliste = `-- name: GetGeburtstagsliste :many
+const getMitarbeiter = `-- name: GetMitarbeiter :many
 SELECT id, name, short, image, sex, focus, mail, abteilungid, einkaufid, azubi, geburtstag, gruppenwahl, homeoffice, mobil_business, mobil_privat, telefon_business, telefon_intern_1, telefon_intern_2, telefon_privat FROM Mitarbeiter 
 ORDER BY name ASC
 `
 
-func (q *Queries) GetGeburtstagsliste(ctx context.Context) ([]Mitarbeiter, error) {
-	rows, err := q.db.QueryContext(ctx, getGeburtstagsliste)
+func (q *Queries) GetMitarbeiter(ctx context.Context) ([]Mitarbeiter, error) {
+	rows, err := q.db.QueryContext(ctx, getMitarbeiter)
 	if err != nil {
 		return nil, err
 	}
@@ -116,4 +231,69 @@ func (q *Queries) GetGeburtstagsliste(ctx context.Context) ([]Mitarbeiter, error
 		return nil, err
 	}
 	return items, nil
+}
+
+const linkEinkauf = `-- name: LinkEinkauf :exec
+UPDATE Mitarbeiter
+SET einkaufId=?
+WHERE id=?
+`
+
+type LinkEinkaufParams struct {
+	Einkaufid sql.NullString
+	ID        string
+}
+
+func (q *Queries) LinkEinkauf(ctx context.Context, arg LinkEinkaufParams) error {
+	_, err := q.db.ExecContext(ctx, linkEinkauf, arg.Einkaufid, arg.ID)
+	return err
+}
+
+const skipEinkauf = `-- name: SkipEinkauf :exec
+UPDATE Einkauf SET Abgeschickt=? WHERE id=?
+`
+
+type SkipEinkaufParams struct {
+	Abgeschickt time.Time
+	ID          string
+}
+
+func (q *Queries) SkipEinkauf(ctx context.Context, arg SkipEinkaufParams) error {
+	_, err := q.db.ExecContext(ctx, skipEinkauf, arg.Abgeschickt, arg.ID)
+	return err
+}
+
+const updateEinkauf = `-- name: UpdateEinkauf :exec
+UPDATE Einkauf 
+SET Paypal=?, Abonniert=?, Geld=?, Pfand=?, Dinge=?, Abgeschickt=?, Bild1=?, Bild2=?, Bild3=? 
+WHERE id=?
+`
+
+type UpdateEinkaufParams struct {
+	Paypal      bool
+	Abonniert   bool
+	Geld        sql.NullString
+	Pfand       sql.NullString
+	Dinge       string
+	Abgeschickt time.Time
+	Bild1       sql.NullString
+	Bild2       sql.NullString
+	Bild3       sql.NullString
+	ID          string
+}
+
+func (q *Queries) UpdateEinkauf(ctx context.Context, arg UpdateEinkaufParams) error {
+	_, err := q.db.ExecContext(ctx, updateEinkauf,
+		arg.Paypal,
+		arg.Abonniert,
+		arg.Geld,
+		arg.Pfand,
+		arg.Dinge,
+		arg.Abgeschickt,
+		arg.Bild1,
+		arg.Bild2,
+		arg.Bild3,
+		arg.ID,
+	)
+	return err
 }

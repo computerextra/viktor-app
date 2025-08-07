@@ -27,7 +27,7 @@ export default function Clock() {
     const now = new Date();
     const msUntilNextSecond = 1000 - now.getMilliseconds();
 
-    let clockInterval: number | undefined = undefined;
+    let clockInterval: NodeJS.Timeout | undefined = undefined;
 
     const timeout = setTimeout(() => {
       updateTime();
@@ -42,15 +42,15 @@ export default function Clock() {
 
   return (
     <div className="panel">
-      <div className="panel-label">datetime</div>
-      <div className="clock">
+      <div className="panel-label">Zeit</div>
+      <div className="text-5xl font-light leading-12 mt-1 mb-0 ms-2 me-0">
         {currentHrs}
-        <span className="colon">:</span>
+        <span>:</span>
         {currentMin}
-        <span className="colon">:</span>
+        <span>:</span>
         {currentSec}
       </div>
-      <div className="date">{currentDate}</div>
+      <div className="text-2xl leading-8 m-0">{currentDate}</div>
     </div>
   );
 }

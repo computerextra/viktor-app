@@ -1,0 +1,35 @@
+package main
+
+type Config struct {
+	DATABASE_URL    string
+	SAGE_URL        string
+	SMTP_HOST       string
+	SMTP_PORT       int
+	SMTP_USER       string
+	SMTP_PASS       string
+	SMTP_FROM       string
+	ARCHIVE_PATH    string
+	FTP_UPLOAD_PATH string
+	FTP_SERVER      string
+	FTP_USER        string
+	FTP_PASS        string
+	FTP_PORT        int
+}
+
+func NewConfig() *Config {
+	return &Config{
+		DATABASE_URL: "mysql://root:password@tcp(example.com:3306)/database",
+		SAGE_URL: "server=SQL\\Example;database=DB;user id=sa;password=password321;port=1433",
+		SMTP_HOST: "example.com",
+		SMTP_PORT: 465,
+		SMTP_USER: "user",
+		SMTP_PASS: "password",
+		SMTP_FROM: "noreply@example.com",
+		ARCHIVE_PATH: "\\\\PATH\\TO\\ARCHIVE",
+		FTP_UPLOAD_PATH: "/path/to/data",
+		FTP_SERVER: "expamle.com",
+		FTP_USER: "user",
+		FTP_PASS: "pass",
+		FTP_PORT: 21,
+	}
+}
