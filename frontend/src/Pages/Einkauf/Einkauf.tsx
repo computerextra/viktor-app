@@ -1,6 +1,7 @@
 import { EinkaufAuswahl } from "@/components/EinkaufAuswahl";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import { GetEinkaufsliste } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
 
@@ -41,7 +42,14 @@ export default function Einkauf() {
                   Edeka Blättchen
                 </a>
               </Button>
-              <Button variant="default" onClick={window.print}>
+              <Button
+                variant="default"
+                onClick={() => {
+                  window.document.documentElement.classList.remove("dark");
+                  window.print();
+                  window.document.documentElement.classList.add("dark");
+                }}
+              >
                 Drucken
               </Button>
             </div>
@@ -128,16 +136,16 @@ export default function Einkauf() {
         <h1>An Post / Kaffee / Milch denken!</h1>
         {Liste?.map((x) => (
           <div key={x.ID}>
-            <p className="!leading-normal">
+            <p className="!leading-normal ">
               Name: {x.Name} <br />
               Geld: {x.Geld.String} <br />
               Pfand: {x.Pfand.String} <br />
-              <span className="flex align-baseline">
+              <span className="flex align-baseline ">
                 Paypal:{" "}
                 {x.Paypal.Bool ? (
-                  <Check className="h-5 w-5" />
+                  <Check className="h-5 w-5 " />
                 ) : (
-                  <Cross className="rotate-45 h-5 w-5" />
+                  <Cross className="rotate-45 h-5 w-5 " />
                 )}
               </span>
             </p>
@@ -157,7 +165,8 @@ export default function Einkauf() {
                 )}
               </div>
             )}
-            <hr />
+
+            <Separator className="my-4 bg-black dark:bg-black" />
           </div>
         ))}
       </div>
