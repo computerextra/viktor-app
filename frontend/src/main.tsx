@@ -4,6 +4,7 @@ import { HashRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout";
 
+import Archiv from "./Pages/Archiv";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
@@ -28,7 +29,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<>Formulare</>} />
           </Route>
           <Route path="Archiv">
-            <Route index element={<>Archiv</>} />
+            <Route index element={<Archiv />} />
           </Route>
           <Route path="Kunden">
             <Route index element={<>Kunden</>} />

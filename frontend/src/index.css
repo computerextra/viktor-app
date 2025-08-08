@@ -119,6 +119,10 @@
   }
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 .panel {
   @apply p-0.5 border-2 border-slate-500 relative;
 }
