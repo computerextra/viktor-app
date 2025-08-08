@@ -25,11 +25,97 @@ func (q *Queries) CheckEinkauf(ctx context.Context, id string) (string, error) {
 	return id, err
 }
 
+const createAbteilung = `-- name: CreateAbteilung :execresult
+INSERT INTO Abteilung (id, name) VALUES (?,?)
+`
+
+type CreateAbteilungParams struct {
+	ID   string
+	Name string
+}
+
+func (q *Queries) CreateAbteilung(ctx context.Context, arg CreateAbteilungParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createAbteilung, arg.ID, arg.Name)
+}
+
+const createAngebot = `-- name: CreateAngebot :execresult
+INSERT INTO Angebot (
+    id, title,  subtitle,   date_start, 
+    date_stop,  link,       image,  
+    anzeigen
+) VALUES (
+    ?,  ?,      ?,          ?,
+    ?,          ?,          ?,
+    ?
+)
+`
+
+type CreateAngebotParams struct {
+	ID        string
+	Title     string
+	Subtitle  sql.NullString
+	DateStart time.Time
+	DateStop  time.Time
+	Link      string
+	Image     string
+	Anzeigen  bool
+}
+
+func (q *Queries) CreateAngebot(ctx context.Context, arg CreateAngebotParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createAngebot,
+		arg.ID,
+		arg.Title,
+		arg.Subtitle,
+		arg.DateStart,
+		arg.DateStop,
+		arg.Link,
+		arg.Image,
+		arg.Anzeigen,
+	)
+}
+
+const createAnsprechpartner = `-- name: CreateAnsprechpartner :execresult
+INSERT INTO Ansprechpartner (
+    id, name,   telefon,    mobil,  mail,   lieferantId
+) VALUES (
+    ?,  ?,      ?,          ?,      ?,      ?
+)
+`
+
+type CreateAnsprechpartnerParams struct {
+	ID          string
+	Name        string
+	Telefon     sql.NullString
+	Mobil       sql.NullString
+	Mail        sql.NullString
+	Lieferantid string
+}
+
+func (q *Queries) CreateAnsprechpartner(ctx context.Context, arg CreateAnsprechpartnerParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createAnsprechpartner,
+		arg.ID,
+		arg.Name,
+		arg.Telefon,
+		arg.Mobil,
+		arg.Mail,
+		arg.Lieferantid,
+	)
+}
+
 const createEinkauf = `-- name: CreateEinkauf :exec
-INSERT INTO Einkauf 
-(id, Paypal, Abonniert, Geld, Pfand, Dinge, Bild1, Bild2, Bild3, Abgeschickt) 
+INSERT INTO Einkauf (
+    id,         Paypal, Abonniert, 
+    Geld,       Pfand,  Dinge, 
+    Bild1,      Bild2,  Bild3, 
+    Abgeschickt
+) 
 VALUES 
-(?,?,?,?,?,?,?,?,?,?)
+(
+    ?,          ?,      ?,
+    ?,          ?,      ?,
+    ?,          ?,      ?,
+    ?
+)
 `
 
 type CreateEinkaufParams struct {
@@ -61,6 +147,188 @@ func (q *Queries) CreateEinkauf(ctx context.Context, arg CreateEinkaufParams) er
 	return err
 }
 
+const createJob = `-- name: CreateJob :execresult
+INSERT INTO Jobs (id, name, online) VALUES (?,?,?)
+`
+
+type CreateJobParams struct {
+	ID     string
+	Name   string
+	Online bool
+}
+
+func (q *Queries) CreateJob(ctx context.Context, arg CreateJobParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createJob, arg.ID, arg.Name, arg.Online)
+}
+
+const createLieferant = `-- name: CreateLieferant :execresult
+INSERT INTO Lieferant (
+    id, Firma,  Kundennummer,   Webseite
+) VALUES (
+    ?,  ?,      ?,              ?
+)
+`
+
+type CreateLieferantParams struct {
+	ID           string
+	Firma        string
+	Kundennummer sql.NullString
+	Webseite     sql.NullString
+}
+
+func (q *Queries) CreateLieferant(ctx context.Context, arg CreateLieferantParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createLieferant,
+		arg.ID,
+		arg.Firma,
+		arg.Kundennummer,
+		arg.Webseite,
+	)
+}
+
+const createMitarbeiter = `-- name: CreateMitarbeiter :execresult
+INSERT INTO Mitarbeiter (
+    id,                 name,               short,  
+    image,              sex,                focus, 
+    mail,               abteilungId,        einkaufId,  
+    Azubi,              Geburtstag,         Gruppenwahl,    
+    HomeOffice,         Mobil_Business,     Mobil_Privat,   
+    Telefon_Intern_1,   Telefon_Intern_2,   Telefon_Privat
+) VALUES (
+    ?,                  ?,                  ?,
+    ?,                  ?,                  ?,
+    ?,                  ?,                  NULL,
+    ?,                  ?,                  ?,
+    ?,                  ?,                  ?,
+    ?,                  ?,                  ?
+)
+`
+
+type CreateMitarbeiterParams struct {
+	ID             string
+	Name           string
+	Short          sql.NullString
+	Image          bool
+	Sex            sql.NullString
+	Focus          sql.NullString
+	Mail           sql.NullString
+	Abteilungid    sql.NullString
+	Azubi          bool
+	Geburtstag     sql.NullTime
+	Gruppenwahl    sql.NullString
+	Homeoffice     sql.NullString
+	MobilBusiness  sql.NullString
+	MobilPrivat    sql.NullString
+	TelefonIntern1 sql.NullString
+	TelefonIntern2 sql.NullString
+	TelefonPrivat  sql.NullString
+}
+
+func (q *Queries) CreateMitarbeiter(ctx context.Context, arg CreateMitarbeiterParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createMitarbeiter,
+		arg.ID,
+		arg.Name,
+		arg.Short,
+		arg.Image,
+		arg.Sex,
+		arg.Focus,
+		arg.Mail,
+		arg.Abteilungid,
+		arg.Azubi,
+		arg.Geburtstag,
+		arg.Gruppenwahl,
+		arg.Homeoffice,
+		arg.MobilBusiness,
+		arg.MobilPrivat,
+		arg.TelefonIntern1,
+		arg.TelefonIntern2,
+		arg.TelefonPrivat,
+	)
+}
+
+const createPartner = `-- name: CreatePartner :execresult
+INSERT INTO Partner (
+    id, name,   link,   image
+) VALUES (
+    ?,  ?,      ?,      ?
+)
+`
+
+type CreatePartnerParams struct {
+	ID    string
+	Name  string
+	Link  string
+	Image string
+}
+
+func (q *Queries) CreatePartner(ctx context.Context, arg CreatePartnerParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createPartner,
+		arg.ID,
+		arg.Name,
+		arg.Link,
+		arg.Image,
+	)
+}
+
+const createWarenlieferung = `-- name: CreateWarenlieferung :exec
+INSERT INTO Warenlieferung (
+    id,         Name,       angelegt,   geliefert,
+    AlterPreis, NeuerPreis, Preis,      Artikelnummer
+) VALUES (
+    ?,          ?,          NOW(),          ?,
+    ?,          ?,          ?,          ?
+)
+`
+
+type CreateWarenlieferungParams struct {
+	ID            int32
+	Name          string
+	Geliefert     sql.NullTime
+	Alterpreis    sql.NullFloat64
+	Neuerpreis    sql.NullFloat64
+	Preis         sql.NullTime
+	Artikelnummer string
+}
+
+func (q *Queries) CreateWarenlieferung(ctx context.Context, arg CreateWarenlieferungParams) error {
+	_, err := q.db.ExecContext(ctx, createWarenlieferung,
+		arg.ID,
+		arg.Name,
+		arg.Geliefert,
+		arg.Alterpreis,
+		arg.Neuerpreis,
+		arg.Preis,
+		arg.Artikelnummer,
+	)
+	return err
+}
+
+const deleteAbteilung = `-- name: DeleteAbteilung :exec
+DELETE FROM Abteilung WHERE id=?
+`
+
+func (q *Queries) DeleteAbteilung(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteAbteilung, id)
+	return err
+}
+
+const deleteAngebot = `-- name: DeleteAngebot :exec
+DELETE FROM Angebot WHERE id=?
+`
+
+func (q *Queries) DeleteAngebot(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteAngebot, id)
+	return err
+}
+
+const deleteAnsprechpartner = `-- name: DeleteAnsprechpartner :exec
+DELETE FROM Ansprechpartner WHERE id=?
+`
+
+func (q *Queries) DeleteAnsprechpartner(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteAnsprechpartner, id)
+	return err
+}
+
 const deleteEinkauf = `-- name: DeleteEinkauf :exec
 UPDATE Einkauf SET Abgeschickt=?, Abonniert=? WHERE id=?
 `
@@ -74,6 +342,236 @@ type DeleteEinkaufParams struct {
 func (q *Queries) DeleteEinkauf(ctx context.Context, arg DeleteEinkaufParams) error {
 	_, err := q.db.ExecContext(ctx, deleteEinkauf, arg.Abgeschickt, arg.Abonniert, arg.ID)
 	return err
+}
+
+const deleteJob = `-- name: DeleteJob :exec
+DELETE FROM Jobs WHERE id=?
+`
+
+func (q *Queries) DeleteJob(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteJob, id)
+	return err
+}
+
+const deleteLieferant = `-- name: DeleteLieferant :exec
+DELETE Lieferant, Ansprechpartner 
+FROM Lieferant
+LEFT JOIN Ansprechpartner 
+ON Lieferant.id = Ansprechpartner.lieferantId
+WHERE Lieferant.id=?
+`
+
+func (q *Queries) DeleteLieferant(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteLieferant, id)
+	return err
+}
+
+const deleteMitarbeiter = `-- name: DeleteMitarbeiter :exec
+DELETE Mitarbeiter, Einkauf 
+FROM Mitarbeiter 
+LEFT JOIN Einkauf ON Einkauf.id = Mitarbeiter.einkaufId 
+WHERE Mitarbeiter.id=?
+`
+
+func (q *Queries) DeleteMitarbeiter(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deleteMitarbeiter, id)
+	return err
+}
+
+const deletePartner = `-- name: DeletePartner :exec
+DELETE FROM Partner WHERE id=?
+`
+
+func (q *Queries) DeletePartner(ctx context.Context, id string) error {
+	_, err := q.db.ExecContext(ctx, deletePartner, id)
+	return err
+}
+
+const getAbteilung = `-- name: GetAbteilung :one
+SELECT id, name FROM Abteilung
+WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetAbteilung(ctx context.Context, id string) (Abteilung, error) {
+	row := q.db.QueryRowContext(ctx, getAbteilung, id)
+	var i Abteilung
+	err := row.Scan(&i.ID, &i.Name)
+	return i, err
+}
+
+const getAbteilungen = `-- name: GetAbteilungen :many
+
+SELECT id, name FROM Abteilung
+ORDER BY name ASC
+`
+
+// Abteilungen --
+func (q *Queries) GetAbteilungen(ctx context.Context) ([]Abteilung, error) {
+	rows, err := q.db.QueryContext(ctx, getAbteilungen)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Abteilung
+	for rows.Next() {
+		var i Abteilung
+		if err := rows.Scan(&i.ID, &i.Name); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAngebot = `-- name: GetAngebot :one
+SELECT id, title, subtitle, date_start, date_stop, link, image, anzeigen FROM Angebot WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetAngebot(ctx context.Context, id string) (Angebot, error) {
+	row := q.db.QueryRowContext(ctx, getAngebot, id)
+	var i Angebot
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Subtitle,
+		&i.DateStart,
+		&i.DateStop,
+		&i.Link,
+		&i.Image,
+		&i.Anzeigen,
+	)
+	return i, err
+}
+
+const getAngebote = `-- name: GetAngebote :many
+
+SELECT id, title, subtitle, date_start, date_stop, link, image, anzeigen FROM Angebot
+`
+
+// Angebote
+func (q *Queries) GetAngebote(ctx context.Context) ([]Angebot, error) {
+	rows, err := q.db.QueryContext(ctx, getAngebote)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Angebot
+	for rows.Next() {
+		var i Angebot
+		if err := rows.Scan(
+			&i.ID,
+			&i.Title,
+			&i.Subtitle,
+			&i.DateStart,
+			&i.DateStop,
+			&i.Link,
+			&i.Image,
+			&i.Anzeigen,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getAnsprechpartner = `-- name: GetAnsprechpartner :one
+SELECT id, name, telefon, mobil, mail, lieferantid FROM Ansprechpartner WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetAnsprechpartner(ctx context.Context, id string) (Ansprechpartner, error) {
+	row := q.db.QueryRowContext(ctx, getAnsprechpartner, id)
+	var i Ansprechpartner
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Telefon,
+		&i.Mobil,
+		&i.Mail,
+		&i.Lieferantid,
+	)
+	return i, err
+}
+
+const getAnsprechpartnerFromLieferant = `-- name: GetAnsprechpartnerFromLieferant :many
+
+SELECT id, name, telefon, mobil, mail, lieferantid FROM Ansprechpartner WHERE lieferantId=? 
+ORDER BY name ASC
+`
+
+// Ansprechpartner --
+func (q *Queries) GetAnsprechpartnerFromLieferant(ctx context.Context, lieferantid string) ([]Ansprechpartner, error) {
+	rows, err := q.db.QueryContext(ctx, getAnsprechpartnerFromLieferant, lieferantid)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Ansprechpartner
+	for rows.Next() {
+		var i Ansprechpartner
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Telefon,
+			&i.Mobil,
+			&i.Mail,
+			&i.Lieferantid,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getCount = `-- name: GetCount :one
+
+SELECT
+	(SELECT COUNT(Abteilung.id) FROM Abteilung) as Abteilungen,
+    (SELECT COUNT(Angebot.id) FROM Angebot) as Angebote,
+    (SELECT COUNT(Jobs.id) FROM Jobs) as Jobs,
+    (SELECT COUNT(Mitarbeiter.id) FROM Mitarbeiter) as Mitarbeiter,
+    (SELECT COUNT(Partner.id) FROM Partner) as Partner
+`
+
+type GetCountRow struct {
+	Abteilungen int64
+	Angebote    int64
+	Jobs        int64
+	Mitarbeiter int64
+	Partner     int64
+}
+
+// CMS --
+func (q *Queries) GetCount(ctx context.Context) (GetCountRow, error) {
+	row := q.db.QueryRowContext(ctx, getCount)
+	var i GetCountRow
+	err := row.Scan(
+		&i.Abteilungen,
+		&i.Angebote,
+		&i.Jobs,
+		&i.Mitarbeiter,
+		&i.Partner,
+	)
+	return i, err
 }
 
 const getEinkauf = `-- name: GetEinkauf :one
@@ -126,6 +624,7 @@ func (q *Queries) GetEinkauf(ctx context.Context, id string) (GetEinkaufRow, err
 }
 
 const getEinkaufsliste = `-- name: GetEinkaufsliste :many
+
 SELECT  
 Mitarbeiter.id, Mitarbeiter.name, Einkauf.Dinge, Einkauf.Paypal, 
 Einkauf.Abonniert, Einkauf.Geld, Einkauf.Pfand, Einkauf.Abgeschickt, 
@@ -150,6 +649,7 @@ type GetEinkaufslisteRow struct {
 	Bild3       sql.NullString
 }
 
+// Einkauf --
 func (q *Queries) GetEinkaufsliste(ctx context.Context) ([]GetEinkaufslisteRow, error) {
 	rows, err := q.db.QueryContext(ctx, getEinkaufsliste)
 	if err != nil {
@@ -185,11 +685,142 @@ func (q *Queries) GetEinkaufsliste(ctx context.Context) ([]GetEinkaufslisteRow, 
 	return items, nil
 }
 
+const getGelieferteArtikel = `-- name: GetGelieferteArtikel :many
+SELECT name, angelegt, geliefert, alterpreis, neuerpreis, preis, artikelnummer, id FROM Warenlieferung
+WHERE DATE_FORMAT(geliefert, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+AND DATE_FORMAT(angelegt, '%Y-%m-%d') != DATE_FORMAT(NOW(), '%Y-%m-%d')
+ORDER BY Artikelnummer ASC
+`
+
+func (q *Queries) GetGelieferteArtikel(ctx context.Context) ([]Warenlieferung, error) {
+	rows, err := q.db.QueryContext(ctx, getGelieferteArtikel)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Warenlieferung
+	for rows.Next() {
+		var i Warenlieferung
+		if err := rows.Scan(
+			&i.Name,
+			&i.Angelegt,
+			&i.Geliefert,
+			&i.Alterpreis,
+			&i.Neuerpreis,
+			&i.Preis,
+			&i.Artikelnummer,
+			&i.ID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getJob = `-- name: GetJob :one
+SELECT id, name, online FROM Jobs WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetJob(ctx context.Context, id string) (Job, error) {
+	row := q.db.QueryRowContext(ctx, getJob, id)
+	var i Job
+	err := row.Scan(&i.ID, &i.Name, &i.Online)
+	return i, err
+}
+
+const getJobs = `-- name: GetJobs :many
+
+SELECT id, name, online FROM Jobs ORDER BY name ASC
+`
+
+// Jobs --
+func (q *Queries) GetJobs(ctx context.Context) ([]Job, error) {
+	rows, err := q.db.QueryContext(ctx, getJobs)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Job
+	for rows.Next() {
+		var i Job
+		if err := rows.Scan(&i.ID, &i.Name, &i.Online); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getLieferant = `-- name: GetLieferant :one
+SELECT id, firma, kundennummer, webseite FROM Lieferant WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetLieferant(ctx context.Context, id string) (Lieferant, error) {
+	row := q.db.QueryRowContext(ctx, getLieferant, id)
+	var i Lieferant
+	err := row.Scan(
+		&i.ID,
+		&i.Firma,
+		&i.Kundennummer,
+		&i.Webseite,
+	)
+	return i, err
+}
+
+const getLieferanten = `-- name: GetLieferanten :many
+
+SELECT id, firma, kundennummer, webseite FROM Lieferant ORDER BY Firma ASC
+`
+
+// Lieferanten --
+func (q *Queries) GetLieferanten(ctx context.Context) ([]Lieferant, error) {
+	rows, err := q.db.QueryContext(ctx, getLieferanten)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Lieferant
+	for rows.Next() {
+		var i Lieferant
+		if err := rows.Scan(
+			&i.ID,
+			&i.Firma,
+			&i.Kundennummer,
+			&i.Webseite,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getMitarbeiter = `-- name: GetMitarbeiter :many
+
 SELECT id, name, short, image, sex, focus, mail, abteilungid, einkaufid, azubi, geburtstag, gruppenwahl, homeoffice, mobil_business, mobil_privat, telefon_business, telefon_intern_1, telefon_intern_2, telefon_privat FROM Mitarbeiter 
 ORDER BY name ASC
 `
 
+// Mitarbeiter --
 func (q *Queries) GetMitarbeiter(ctx context.Context) ([]Mitarbeiter, error) {
 	rows, err := q.db.QueryContext(ctx, getMitarbeiter)
 	if err != nil {
@@ -233,6 +864,366 @@ func (q *Queries) GetMitarbeiter(ctx context.Context) ([]Mitarbeiter, error) {
 	return items, nil
 }
 
+const getMitarbeiterWithAbteilung = `-- name: GetMitarbeiterWithAbteilung :many
+SELECT mitarbeiter.id, mitarbeiter.name, mitarbeiter.short, mitarbeiter.image, mitarbeiter.sex, mitarbeiter.focus, mitarbeiter.mail, mitarbeiter.abteilungid, mitarbeiter.einkaufid, mitarbeiter.azubi, mitarbeiter.geburtstag, mitarbeiter.gruppenwahl, mitarbeiter.homeoffice, mitarbeiter.mobil_business, mitarbeiter.mobil_privat, mitarbeiter.telefon_business, mitarbeiter.telefon_intern_1, mitarbeiter.telefon_intern_2, mitarbeiter.telefon_privat, 
+Abteilung.id as Abteilung_Id, 
+Abteilung.name as Abteilung_Name 
+FROM Mitarbeiter 
+LEFT JOIN Abteilung ON Mitarbeiter.abteilungId = Abteilung.id 
+ORDER BY Mitarbeiter.name ASC
+`
+
+type GetMitarbeiterWithAbteilungRow struct {
+	ID              string
+	Name            string
+	Short           sql.NullString
+	Image           bool
+	Sex             sql.NullString
+	Focus           sql.NullString
+	Mail            sql.NullString
+	Abteilungid     sql.NullString
+	Einkaufid       sql.NullString
+	Azubi           bool
+	Geburtstag      sql.NullTime
+	Gruppenwahl     sql.NullString
+	Homeoffice      sql.NullString
+	MobilBusiness   sql.NullString
+	MobilPrivat     sql.NullString
+	TelefonBusiness sql.NullString
+	TelefonIntern1  sql.NullString
+	TelefonIntern2  sql.NullString
+	TelefonPrivat   sql.NullString
+	AbteilungID     sql.NullString
+	AbteilungName   sql.NullString
+}
+
+func (q *Queries) GetMitarbeiterWithAbteilung(ctx context.Context) ([]GetMitarbeiterWithAbteilungRow, error) {
+	rows, err := q.db.QueryContext(ctx, getMitarbeiterWithAbteilung)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []GetMitarbeiterWithAbteilungRow
+	for rows.Next() {
+		var i GetMitarbeiterWithAbteilungRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Short,
+			&i.Image,
+			&i.Sex,
+			&i.Focus,
+			&i.Mail,
+			&i.Abteilungid,
+			&i.Einkaufid,
+			&i.Azubi,
+			&i.Geburtstag,
+			&i.Gruppenwahl,
+			&i.Homeoffice,
+			&i.MobilBusiness,
+			&i.MobilPrivat,
+			&i.TelefonBusiness,
+			&i.TelefonIntern1,
+			&i.TelefonIntern2,
+			&i.TelefonPrivat,
+			&i.AbteilungID,
+			&i.AbteilungName,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getNeueArtikel = `-- name: GetNeueArtikel :many
+SELECT name, angelegt, geliefert, alterpreis, neuerpreis, preis, artikelnummer, id FROM Warenlieferung
+WHERE DATE_FORMAT(angelegt, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+ORDER BY Artikelnummer ASC
+`
+
+func (q *Queries) GetNeueArtikel(ctx context.Context) ([]Warenlieferung, error) {
+	rows, err := q.db.QueryContext(ctx, getNeueArtikel)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Warenlieferung
+	for rows.Next() {
+		var i Warenlieferung
+		if err := rows.Scan(
+			&i.Name,
+			&i.Angelegt,
+			&i.Geliefert,
+			&i.Alterpreis,
+			&i.Neuerpreis,
+			&i.Preis,
+			&i.Artikelnummer,
+			&i.ID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getNeuePreise = `-- name: GetNeuePreise :many
+SELECT name, angelegt, geliefert, alterpreis, neuerpreis, preis, artikelnummer, id FROM Warenlieferung
+WHERE DATE_FORMAT(Preis, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+AND DATE_FORMAT(angelegt, '%Y-%m-%d') != DATE_FORMAT(NOW(),'%Y-%m-%d')
+ORDER BY Artikelnummer ASC
+`
+
+func (q *Queries) GetNeuePreise(ctx context.Context) ([]Warenlieferung, error) {
+	rows, err := q.db.QueryContext(ctx, getNeuePreise)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Warenlieferung
+	for rows.Next() {
+		var i Warenlieferung
+		if err := rows.Scan(
+			&i.Name,
+			&i.Angelegt,
+			&i.Geliefert,
+			&i.Alterpreis,
+			&i.Neuerpreis,
+			&i.Preis,
+			&i.Artikelnummer,
+			&i.ID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getOneMitarbeiter = `-- name: GetOneMitarbeiter :one
+SELECT id, name, short, image, sex, focus, mail, abteilungid, einkaufid, azubi, geburtstag, gruppenwahl, homeoffice, mobil_business, mobil_privat, telefon_business, telefon_intern_1, telefon_intern_2, telefon_privat FROM Mitarbeiter WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetOneMitarbeiter(ctx context.Context, id string) (Mitarbeiter, error) {
+	row := q.db.QueryRowContext(ctx, getOneMitarbeiter, id)
+	var i Mitarbeiter
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Short,
+		&i.Image,
+		&i.Sex,
+		&i.Focus,
+		&i.Mail,
+		&i.Abteilungid,
+		&i.Einkaufid,
+		&i.Azubi,
+		&i.Geburtstag,
+		&i.Gruppenwahl,
+		&i.Homeoffice,
+		&i.MobilBusiness,
+		&i.MobilPrivat,
+		&i.TelefonBusiness,
+		&i.TelefonIntern1,
+		&i.TelefonIntern2,
+		&i.TelefonPrivat,
+	)
+	return i, err
+}
+
+const getOneMitarbeiterWithAbteilung = `-- name: GetOneMitarbeiterWithAbteilung :one
+SELECT mitarbeiter.id, mitarbeiter.name, mitarbeiter.short, mitarbeiter.image, mitarbeiter.sex, mitarbeiter.focus, mitarbeiter.mail, mitarbeiter.abteilungid, mitarbeiter.einkaufid, mitarbeiter.azubi, mitarbeiter.geburtstag, mitarbeiter.gruppenwahl, mitarbeiter.homeoffice, mitarbeiter.mobil_business, mitarbeiter.mobil_privat, mitarbeiter.telefon_business, mitarbeiter.telefon_intern_1, mitarbeiter.telefon_intern_2, mitarbeiter.telefon_privat, 
+Abteilung.id as Abteilung_Id, 
+Abteilung.name as Abteilung_Name 
+FROM Mitarbeiter 
+LEFT JOIN Abteilung ON Mitarbeiter.abteilungId = Abteilung.id 
+WHERE Mitarbeiter.id = ? LIMIT 1
+`
+
+type GetOneMitarbeiterWithAbteilungRow struct {
+	ID              string
+	Name            string
+	Short           sql.NullString
+	Image           bool
+	Sex             sql.NullString
+	Focus           sql.NullString
+	Mail            sql.NullString
+	Abteilungid     sql.NullString
+	Einkaufid       sql.NullString
+	Azubi           bool
+	Geburtstag      sql.NullTime
+	Gruppenwahl     sql.NullString
+	Homeoffice      sql.NullString
+	MobilBusiness   sql.NullString
+	MobilPrivat     sql.NullString
+	TelefonBusiness sql.NullString
+	TelefonIntern1  sql.NullString
+	TelefonIntern2  sql.NullString
+	TelefonPrivat   sql.NullString
+	AbteilungID     sql.NullString
+	AbteilungName   sql.NullString
+}
+
+func (q *Queries) GetOneMitarbeiterWithAbteilung(ctx context.Context, id string) (GetOneMitarbeiterWithAbteilungRow, error) {
+	row := q.db.QueryRowContext(ctx, getOneMitarbeiterWithAbteilung, id)
+	var i GetOneMitarbeiterWithAbteilungRow
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Short,
+		&i.Image,
+		&i.Sex,
+		&i.Focus,
+		&i.Mail,
+		&i.Abteilungid,
+		&i.Einkaufid,
+		&i.Azubi,
+		&i.Geburtstag,
+		&i.Gruppenwahl,
+		&i.Homeoffice,
+		&i.MobilBusiness,
+		&i.MobilPrivat,
+		&i.TelefonBusiness,
+		&i.TelefonIntern1,
+		&i.TelefonIntern2,
+		&i.TelefonPrivat,
+		&i.AbteilungID,
+		&i.AbteilungName,
+	)
+	return i, err
+}
+
+const getPartner = `-- name: GetPartner :one
+SELECT id, name, link, image FROM Partner WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetPartner(ctx context.Context, id string) (Partner, error) {
+	row := q.db.QueryRowContext(ctx, getPartner, id)
+	var i Partner
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Link,
+		&i.Image,
+	)
+	return i, err
+}
+
+const getPartners = `-- name: GetPartners :many
+
+SELECT id, name, link, image FROM Partner ORDER BY name ASC
+`
+
+// Partner --
+func (q *Queries) GetPartners(ctx context.Context) ([]Partner, error) {
+	rows, err := q.db.QueryContext(ctx, getPartners)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Partner
+	for rows.Next() {
+		var i Partner
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Link,
+			&i.Image,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getPdf = `-- name: GetPdf :one
+SELECT title FROM Pdfs WHERE id=? LIMIT 1
+`
+
+func (q *Queries) GetPdf(ctx context.Context, id int32) (string, error) {
+	row := q.db.QueryRowContext(ctx, getPdf, id)
+	var title string
+	err := row.Scan(&title)
+	return title, err
+}
+
+const getStatus = `-- name: GetStatus :one
+
+SELECT status, since, id FROM Status LIMIT 1
+`
+
+// Status --
+func (q *Queries) GetStatus(ctx context.Context) (Status, error) {
+	row := q.db.QueryRowContext(ctx, getStatus)
+	var i Status
+	err := row.Scan(&i.Status, &i.Since, &i.ID)
+	return i, err
+}
+
+const getWarenlieferung = `-- name: GetWarenlieferung :many
+
+SELECT name, angelegt, geliefert, alterpreis, neuerpreis, preis, artikelnummer, id FROM Warenlieferung
+`
+
+// Warenlieferung --
+func (q *Queries) GetWarenlieferung(ctx context.Context) ([]Warenlieferung, error) {
+	rows, err := q.db.QueryContext(ctx, getWarenlieferung)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Warenlieferung
+	for rows.Next() {
+		var i Warenlieferung
+		if err := rows.Scan(
+			&i.Name,
+			&i.Angelegt,
+			&i.Geliefert,
+			&i.Alterpreis,
+			&i.Neuerpreis,
+			&i.Preis,
+			&i.Artikelnummer,
+			&i.ID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const linkEinkauf = `-- name: LinkEinkauf :exec
 UPDATE Mitarbeiter
 SET einkaufId=?
@@ -249,6 +1240,45 @@ func (q *Queries) LinkEinkauf(ctx context.Context, arg LinkEinkaufParams) error 
 	return err
 }
 
+const searchArchive = `-- name: SearchArchive :many
+
+SELECT id, title FROM Pdfs WHERE body LIKE ? OR title LIKE ?
+`
+
+type SearchArchiveParams struct {
+	Body  string
+	Title string
+}
+
+type SearchArchiveRow struct {
+	ID    int32
+	Title string
+}
+
+// PDFs --
+func (q *Queries) SearchArchive(ctx context.Context, arg SearchArchiveParams) ([]SearchArchiveRow, error) {
+	rows, err := q.db.QueryContext(ctx, searchArchive, arg.Body, arg.Title)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []SearchArchiveRow
+	for rows.Next() {
+		var i SearchArchiveRow
+		if err := rows.Scan(&i.ID, &i.Title); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const skipEinkauf = `-- name: SkipEinkauf :exec
 UPDATE Einkauf SET Abgeschickt=? WHERE id=?
 `
@@ -260,6 +1290,93 @@ type SkipEinkaufParams struct {
 
 func (q *Queries) SkipEinkauf(ctx context.Context, arg SkipEinkaufParams) error {
 	_, err := q.db.ExecContext(ctx, skipEinkauf, arg.Abgeschickt, arg.ID)
+	return err
+}
+
+const updateAbteilung = `-- name: UpdateAbteilung :exec
+UPDATE Abteilung SET name=? WHERE id=?
+`
+
+type UpdateAbteilungParams struct {
+	Name string
+	ID   string
+}
+
+func (q *Queries) UpdateAbteilung(ctx context.Context, arg UpdateAbteilungParams) error {
+	_, err := q.db.ExecContext(ctx, updateAbteilung, arg.Name, arg.ID)
+	return err
+}
+
+const updateAngebot = `-- name: UpdateAngebot :exec
+UPDATE Angebot SET 
+title=?, subtitle=?, date_start=?, 
+date_stop=?, link=?, image=?, anzeigen=?
+WHERE id=?
+`
+
+type UpdateAngebotParams struct {
+	Title     string
+	Subtitle  sql.NullString
+	DateStart time.Time
+	DateStop  time.Time
+	Link      string
+	Image     string
+	Anzeigen  bool
+	ID        string
+}
+
+func (q *Queries) UpdateAngebot(ctx context.Context, arg UpdateAngebotParams) error {
+	_, err := q.db.ExecContext(ctx, updateAngebot,
+		arg.Title,
+		arg.Subtitle,
+		arg.DateStart,
+		arg.DateStop,
+		arg.Link,
+		arg.Image,
+		arg.Anzeigen,
+		arg.ID,
+	)
+	return err
+}
+
+const updateAnsprechpartner = `-- name: UpdateAnsprechpartner :exec
+UPDATE Ansprechpartner 
+SET name=?, telefon=?, mobil=?, mail=?
+WHERE id=?
+`
+
+type UpdateAnsprechpartnerParams struct {
+	Name    string
+	Telefon sql.NullString
+	Mobil   sql.NullString
+	Mail    sql.NullString
+	ID      string
+}
+
+func (q *Queries) UpdateAnsprechpartner(ctx context.Context, arg UpdateAnsprechpartnerParams) error {
+	_, err := q.db.ExecContext(ctx, updateAnsprechpartner,
+		arg.Name,
+		arg.Telefon,
+		arg.Mobil,
+		arg.Mail,
+		arg.ID,
+	)
+	return err
+}
+
+const updateAusteller = `-- name: UpdateAusteller :exec
+
+UPDATE Aussteller SET Bild=? WHERE Artikelnummer=?
+`
+
+type UpdateAustellerParams struct {
+	Bild          sql.NullString
+	Artikelnummer string
+}
+
+// Aussteller --
+func (q *Queries) UpdateAusteller(ctx context.Context, arg UpdateAustellerParams) error {
+	_, err := q.db.ExecContext(ctx, updateAusteller, arg.Bild, arg.Artikelnummer)
 	return err
 }
 
@@ -293,6 +1410,155 @@ func (q *Queries) UpdateEinkauf(ctx context.Context, arg UpdateEinkaufParams) er
 		arg.Bild1,
 		arg.Bild2,
 		arg.Bild3,
+		arg.ID,
+	)
+	return err
+}
+
+const updateJob = `-- name: UpdateJob :exec
+UPDATE Jobs SET name=?, online=? WHERE id=?
+`
+
+type UpdateJobParams struct {
+	Name   string
+	Online bool
+	ID     string
+}
+
+func (q *Queries) UpdateJob(ctx context.Context, arg UpdateJobParams) error {
+	_, err := q.db.ExecContext(ctx, updateJob, arg.Name, arg.Online, arg.ID)
+	return err
+}
+
+const updateLieferant = `-- name: UpdateLieferant :exec
+UPDATE Lieferant SET Firma=?, Kundennummer=?, Webseite=? WHERE id=?
+`
+
+type UpdateLieferantParams struct {
+	Firma        string
+	Kundennummer sql.NullString
+	Webseite     sql.NullString
+	ID           string
+}
+
+func (q *Queries) UpdateLieferant(ctx context.Context, arg UpdateLieferantParams) error {
+	_, err := q.db.ExecContext(ctx, updateLieferant,
+		arg.Firma,
+		arg.Kundennummer,
+		arg.Webseite,
+		arg.ID,
+	)
+	return err
+}
+
+const updateLieferung = `-- name: UpdateLieferung :exec
+UPDATE Warenlieferung SET 
+Name=?, geliefert=NOW()
+WHERE id=?
+`
+
+type UpdateLieferungParams struct {
+	Name string
+	ID   int32
+}
+
+func (q *Queries) UpdateLieferung(ctx context.Context, arg UpdateLieferungParams) error {
+	_, err := q.db.ExecContext(ctx, updateLieferung, arg.Name, arg.ID)
+	return err
+}
+
+const updateMitarbeiter = `-- name: UpdateMitarbeiter :exec
+UPDATE Mitarbeiter SET 
+name=?, short=?, image=?, sex=?, focus=?, 
+mail=?, abteilungId=?, Azubi=?,
+Geburtstag=?, Gruppenwahl=?, HomeOffice=?,
+Mobil_Business=?, Mobil_Privat=?, Telefon_Intern_1=?, 
+Telefon_Intern_2=?, Telefon_Privat=?
+WHERE id=?
+`
+
+type UpdateMitarbeiterParams struct {
+	Name           string
+	Short          sql.NullString
+	Image          bool
+	Sex            sql.NullString
+	Focus          sql.NullString
+	Mail           sql.NullString
+	Abteilungid    sql.NullString
+	Azubi          bool
+	Geburtstag     sql.NullTime
+	Gruppenwahl    sql.NullString
+	Homeoffice     sql.NullString
+	MobilBusiness  sql.NullString
+	MobilPrivat    sql.NullString
+	TelefonIntern1 sql.NullString
+	TelefonIntern2 sql.NullString
+	TelefonPrivat  sql.NullString
+	ID             string
+}
+
+func (q *Queries) UpdateMitarbeiter(ctx context.Context, arg UpdateMitarbeiterParams) error {
+	_, err := q.db.ExecContext(ctx, updateMitarbeiter,
+		arg.Name,
+		arg.Short,
+		arg.Image,
+		arg.Sex,
+		arg.Focus,
+		arg.Mail,
+		arg.Abteilungid,
+		arg.Azubi,
+		arg.Geburtstag,
+		arg.Gruppenwahl,
+		arg.Homeoffice,
+		arg.MobilBusiness,
+		arg.MobilPrivat,
+		arg.TelefonIntern1,
+		arg.TelefonIntern2,
+		arg.TelefonPrivat,
+		arg.ID,
+	)
+	return err
+}
+
+const updatePartner = `-- name: UpdatePartner :exec
+UPDATE Partner SET name=?, link=?, image=? WHERE id=?
+`
+
+type UpdatePartnerParams struct {
+	Name  string
+	Link  string
+	Image string
+	ID    string
+}
+
+func (q *Queries) UpdatePartner(ctx context.Context, arg UpdatePartnerParams) error {
+	_, err := q.db.ExecContext(ctx, updatePartner,
+		arg.Name,
+		arg.Link,
+		arg.Image,
+		arg.ID,
+	)
+	return err
+}
+
+const updatePreis = `-- name: UpdatePreis :exec
+UPDATE Warenlieferung SET 
+AlterPreis=?, NeuerPreis=?, Preis=?
+WHERE id=?
+`
+
+type UpdatePreisParams struct {
+	Alterpreis sql.NullFloat64
+	Neuerpreis sql.NullFloat64
+	Preis      sql.NullTime
+	ID         int32
+}
+
+func (q *Queries) UpdatePreis(ctx context.Context, arg UpdatePreisParams) error {
+	_, err := q.db.ExecContext(ctx, updatePreis,
+		arg.Alterpreis,
+		arg.Neuerpreis,
+		arg.Preis,
 		arg.ID,
 	)
 	return err
