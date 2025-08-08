@@ -8,6 +8,7 @@ import Archiv from "./Pages/Archiv";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
+import Kundensuche from "./Pages/Kundensuche";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -32,7 +33,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<Archiv />} />
           </Route>
           <Route path="Kunden">
-            <Route index element={<>Kunden</>} />
+            <Route index element={<Kundensuche />} />
           </Route>
           <Route path="Warenlieferung">
             <Route index element={<>Warenlieferung</>} />
