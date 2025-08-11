@@ -26,7 +26,7 @@ const formSchema = z.object({
 export default function Kundensuche() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<undefined | main.KundenResponse[]>(
-    undefined
+    undefined,
   );
 
   const form = useForm<z.infer<typeof formSchema>>({

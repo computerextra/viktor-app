@@ -189,7 +189,7 @@ ORDER BY name ASC;
 SELECT * FROM Mitarbeiter WHERE id=? LIMIT 1;
 
 -- name: GetMitarbeiterWithAbteilung :many
-SELECT Mitarbeiter.*, 
+SELECT Mitarbeiter.*
 Abteilung.id as Abteilung_Id, 
 Abteilung.name as Abteilung_Name 
 FROM Mitarbeiter 

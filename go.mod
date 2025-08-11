@@ -8,13 +8,11 @@ require (
 	github.com/jlaffaye/ftp v0.2.0
 	github.com/lucsky/cuid v1.2.1
 	github.com/mattn/go-adodb v0.0.1
-	github.com/minio/selfupdate v0.6.0
 	github.com/wailsapp/wails/v2 v2.10.2
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
 require (
-	aead.dev/minisign v0.2.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect

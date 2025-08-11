@@ -3,12 +3,15 @@ import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout";
-
 import Archiv from "./Pages/Archiv";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
 import Kundensuche from "./Pages/Kundensuche";
+import CmsOverview from "./Pages/CRM/Overview";
+import AbteilungOverview from "./Pages/CRM/Abteilung/Overview";
+import AngeboteOverview from "./Pages/CRM/Angebote/Overview";
+import MitarbeiterOverview from "./Pages/CRM/Mitarbeiter/Overview";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -39,7 +42,16 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<>Warenlieferung</>} />
           </Route>
           <Route path="CMS">
-            <Route index element={<>CMS</>} />
+            <Route index element={<CmsOverview />} />
+            <Route path="Abteilungen">
+              <Route index element={<AbteilungOverview />} />
+            </Route>
+            <Route path="Angebote">
+              <Route index element={<AngeboteOverview />} />
+            </Route>
+            <Route path="Mitarbeiter">
+              <Route index element={<MitarbeiterOverview />} />
+            </Route>
           </Route>
           <Route path="SN">
             <Route index element={<>SN</>} />
@@ -59,5 +71,5 @@ createRoot(document.getElementById("root")!).render(
         </Route>
       </Routes>
     </HashRouter>
-  </StrictMode>
+  </StrictMode>,
 );
