@@ -865,7 +865,10 @@ func (q *Queries) GetMitarbeiter(ctx context.Context) ([]Mitarbeiter, error) {
 }
 
 const getMitarbeiterWithAbteilung = `-- name: GetMitarbeiterWithAbteilung :many
-SELECT mitarbeiter.id, mitarbeiter.name, mitarbeiter.short, mitarbeiter.image, mitarbeiter.sex, mitarbeiter.focus, mitarbeiter.mail, mitarbeiter.abteilungid, mitarbeiter.einkaufid, mitarbeiter.azubi, mitarbeiter.geburtstag, mitarbeiter.gruppenwahl, mitarbeiter.homeoffice, mitarbeiter.mobil_business, mitarbeiter.mobil_privat, mitarbeiter.telefon_business, mitarbeiter.telefon_intern_1, mitarbeiter.telefon_intern_2, mitarbeiter.telefon_privat, 
+SELECT Mitarbeiter.id, Mitarbeiter.name, 
+Mitarbeiter.short, Mitarbeiter.sex, 
+Mitarbeiter.focus, Mitarbeiter.mail, 
+Mitarbeiter.abteilungId,
 Abteilung.id as Abteilung_Id, 
 Abteilung.name as Abteilung_Name 
 FROM Mitarbeiter 
@@ -874,27 +877,15 @@ ORDER BY Mitarbeiter.name ASC
 `
 
 type GetMitarbeiterWithAbteilungRow struct {
-	ID              string
-	Name            string
-	Short           sql.NullString
-	Image           bool
-	Sex             sql.NullString
-	Focus           sql.NullString
-	Mail            sql.NullString
-	Abteilungid     sql.NullString
-	Einkaufid       sql.NullString
-	Azubi           bool
-	Geburtstag      sql.NullTime
-	Gruppenwahl     sql.NullString
-	Homeoffice      sql.NullString
-	MobilBusiness   sql.NullString
-	MobilPrivat     sql.NullString
-	TelefonBusiness sql.NullString
-	TelefonIntern1  sql.NullString
-	TelefonIntern2  sql.NullString
-	TelefonPrivat   sql.NullString
-	AbteilungID     sql.NullString
-	AbteilungName   sql.NullString
+	ID            string
+	Name          string
+	Short         sql.NullString
+	Sex           sql.NullString
+	Focus         sql.NullString
+	Mail          sql.NullString
+	Abteilungid   sql.NullString
+	AbteilungID   sql.NullString
+	AbteilungName sql.NullString
 }
 
 func (q *Queries) GetMitarbeiterWithAbteilung(ctx context.Context) ([]GetMitarbeiterWithAbteilungRow, error) {
@@ -910,22 +901,10 @@ func (q *Queries) GetMitarbeiterWithAbteilung(ctx context.Context) ([]GetMitarbe
 			&i.ID,
 			&i.Name,
 			&i.Short,
-			&i.Image,
 			&i.Sex,
 			&i.Focus,
 			&i.Mail,
 			&i.Abteilungid,
-			&i.Einkaufid,
-			&i.Azubi,
-			&i.Geburtstag,
-			&i.Gruppenwahl,
-			&i.Homeoffice,
-			&i.MobilBusiness,
-			&i.MobilPrivat,
-			&i.TelefonBusiness,
-			&i.TelefonIntern1,
-			&i.TelefonIntern2,
-			&i.TelefonPrivat,
 			&i.AbteilungID,
 			&i.AbteilungName,
 		); err != nil {
@@ -1051,7 +1030,10 @@ func (q *Queries) GetOneMitarbeiter(ctx context.Context, id string) (Mitarbeiter
 }
 
 const getOneMitarbeiterWithAbteilung = `-- name: GetOneMitarbeiterWithAbteilung :one
-SELECT mitarbeiter.id, mitarbeiter.name, mitarbeiter.short, mitarbeiter.image, mitarbeiter.sex, mitarbeiter.focus, mitarbeiter.mail, mitarbeiter.abteilungid, mitarbeiter.einkaufid, mitarbeiter.azubi, mitarbeiter.geburtstag, mitarbeiter.gruppenwahl, mitarbeiter.homeoffice, mitarbeiter.mobil_business, mitarbeiter.mobil_privat, mitarbeiter.telefon_business, mitarbeiter.telefon_intern_1, mitarbeiter.telefon_intern_2, mitarbeiter.telefon_privat, 
+SELECT Mitarbeiter.id, Mitarbeiter.name, 
+Mitarbeiter.short, Mitarbeiter.sex, 
+Mitarbeiter.focus, Mitarbeiter.mail, 
+Mitarbeiter.abteilungId,
 Abteilung.id as Abteilung_Id, 
 Abteilung.name as Abteilung_Name 
 FROM Mitarbeiter 
@@ -1060,27 +1042,15 @@ WHERE Mitarbeiter.id = ? LIMIT 1
 `
 
 type GetOneMitarbeiterWithAbteilungRow struct {
-	ID              string
-	Name            string
-	Short           sql.NullString
-	Image           bool
-	Sex             sql.NullString
-	Focus           sql.NullString
-	Mail            sql.NullString
-	Abteilungid     sql.NullString
-	Einkaufid       sql.NullString
-	Azubi           bool
-	Geburtstag      sql.NullTime
-	Gruppenwahl     sql.NullString
-	Homeoffice      sql.NullString
-	MobilBusiness   sql.NullString
-	MobilPrivat     sql.NullString
-	TelefonBusiness sql.NullString
-	TelefonIntern1  sql.NullString
-	TelefonIntern2  sql.NullString
-	TelefonPrivat   sql.NullString
-	AbteilungID     sql.NullString
-	AbteilungName   sql.NullString
+	ID            string
+	Name          string
+	Short         sql.NullString
+	Sex           sql.NullString
+	Focus         sql.NullString
+	Mail          sql.NullString
+	Abteilungid   sql.NullString
+	AbteilungID   sql.NullString
+	AbteilungName sql.NullString
 }
 
 func (q *Queries) GetOneMitarbeiterWithAbteilung(ctx context.Context, id string) (GetOneMitarbeiterWithAbteilungRow, error) {
@@ -1090,22 +1060,10 @@ func (q *Queries) GetOneMitarbeiterWithAbteilung(ctx context.Context, id string)
 		&i.ID,
 		&i.Name,
 		&i.Short,
-		&i.Image,
 		&i.Sex,
 		&i.Focus,
 		&i.Mail,
 		&i.Abteilungid,
-		&i.Einkaufid,
-		&i.Azubi,
-		&i.Geburtstag,
-		&i.Gruppenwahl,
-		&i.Homeoffice,
-		&i.MobilBusiness,
-		&i.MobilPrivat,
-		&i.TelefonBusiness,
-		&i.TelefonIntern1,
-		&i.TelefonIntern2,
-		&i.TelefonPrivat,
 		&i.AbteilungID,
 		&i.AbteilungName,
 	)

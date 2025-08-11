@@ -12,6 +12,7 @@ import CmsOverview from "./Pages/CRM/Overview";
 import AbteilungOverview from "./Pages/CRM/Abteilung/Overview";
 import AngeboteOverview from "./Pages/CRM/Angebote/Overview";
 import MitarbeiterOverview from "./Pages/CRM/Mitarbeiter/Overview";
+import JobOverview from "./Pages/CRM/Jobs/Overview";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -51,6 +52,9 @@ createRoot(document.getElementById("root")!).render(
             </Route>
             <Route path="Mitarbeiter">
               <Route index element={<MitarbeiterOverview />} />
+            </Route>
+            <Route path="Jobs">
+              <Route index element={<JobOverview />} />
             </Route>
           </Route>
           <Route path="SN">

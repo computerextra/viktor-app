@@ -189,7 +189,10 @@ ORDER BY name ASC;
 SELECT * FROM Mitarbeiter WHERE id=? LIMIT 1;
 
 -- name: GetMitarbeiterWithAbteilung :many
-SELECT Mitarbeiter.*
+SELECT Mitarbeiter.id, Mitarbeiter.name, 
+Mitarbeiter.short, Mitarbeiter.sex, 
+Mitarbeiter.focus, Mitarbeiter.mail, 
+Mitarbeiter.abteilungId,
 Abteilung.id as Abteilung_Id, 
 Abteilung.name as Abteilung_Name 
 FROM Mitarbeiter 
@@ -197,7 +200,10 @@ LEFT JOIN Abteilung ON Mitarbeiter.abteilungId = Abteilung.id
 ORDER BY Mitarbeiter.name ASC;
 
 -- name: GetOneMitarbeiterWithAbteilung :one
-SELECT Mitarbeiter.*, 
+SELECT Mitarbeiter.id, Mitarbeiter.name, 
+Mitarbeiter.short, Mitarbeiter.sex, 
+Mitarbeiter.focus, Mitarbeiter.mail, 
+Mitarbeiter.abteilungId,
 Abteilung.id as Abteilung_Id, 
 Abteilung.name as Abteilung_Name 
 FROM Mitarbeiter 

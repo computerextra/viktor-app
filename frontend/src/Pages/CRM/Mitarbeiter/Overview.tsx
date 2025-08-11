@@ -1,9 +1,12 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
+import { Button } from "@/components/ui/button";
 import { GetMitarbeiterMitAbteilung } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
 import type { ColumnDef } from "@tanstack/react-table";
+import { Mars, Venus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 const columns: ColumnDef<db.GetMitarbeiterWithAbteilungRow>[] = [
   {
@@ -13,6 +16,65 @@ const columns: ColumnDef<db.GetMitarbeiterWithAbteilungRow>[] = [
   {
     accessorKey: "AbteilungName",
     header: "Abteilung",
+    cell: ({ row }) => {
+      const x = row.original;
+      if (x.AbteilungName.Valid) {
+        return x.AbteilungName.String;
+      } else {
+        return "-";
+      }
+    },
+  },
+  {
+    accessorKey: "Sex",
+    header: "Geschlecht",
+    cell: ({ row }) => {
+      const x = row.original;
+      if (x.Sex.Valid) {
+        if (x.Sex.String == "m") {
+          return <Mars />;
+        } else {
+          return <Venus />;
+        }
+      } else {
+        return "-";
+      }
+    },
+  },
+  {
+    accessorKey: "Mail",
+    header: "E-Mail",
+    cell: ({ row }) => {
+      const x = row.original;
+      if (x.Mail.Valid) {
+        return x.Mail.String;
+      } else {
+        return "-";
+      }
+    },
+  },
+  {
+    accessorKey: "Focus",
+    header: "Focus",
+    cell: ({ row }) => {
+      const x = row.original;
+      if (x.Focus.Valid && x.Focus.String.length > 0) {
+        return x.Focus.String;
+      } else {
+        return "-";
+      }
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const x = row.original;
+      return (
+        <Button asChild>
+          <Link to={"/CMD/Mitarbeiter" + x.ID}>Bearbeiten</Link>
+        </Button>
+      );
+    },
   },
 ];
 
