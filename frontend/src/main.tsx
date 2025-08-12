@@ -13,6 +13,9 @@ import AbteilungOverview from "./Pages/CRM/Abteilung/Overview";
 import AngeboteOverview from "./Pages/CRM/Angebote/Overview";
 import MitarbeiterOverview from "./Pages/CRM/Mitarbeiter/Overview";
 import JobOverview from "./Pages/CRM/Jobs/Overview";
+import PartnerOverview from "./Pages/CRM/Partner/Overview";
+import EditAbteilung from "./Pages/CRM/Abteilung/id";
+import NewAbteilung from "./Pages/CRM/Abteilung/neu";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -46,6 +49,8 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<CmsOverview />} />
             <Route path="Abteilungen">
               <Route index element={<AbteilungOverview />} />
+              <Route path="Neu" element={<NewAbteilung />} />
+              <Route path=":id" element={<EditAbteilung />} />
             </Route>
             <Route path="Angebote">
               <Route index element={<AngeboteOverview />} />
@@ -55,6 +60,9 @@ createRoot(document.getElementById("root")!).render(
             </Route>
             <Route path="Jobs">
               <Route index element={<JobOverview />} />
+            </Route>
+            <Route path="Partner">
+              <Route index element={<PartnerOverview />} />
             </Route>
           </Route>
           <Route path="SN">

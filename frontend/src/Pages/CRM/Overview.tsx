@@ -25,13 +25,13 @@ export default function CmsOverview() {
           <Link to={"/CMS/Angebote"}>Angebote {zahlen?.Angebote}</Link>
         </Button>
         <Button variant={"default"} asChild>
-          <Link to={"/CMS/Mitarbeiter"}>Mitarbeiter {zahlen?.Mitarbeiter}</Link>
-        </Button>
-        <Button variant={"default"} asChild>
           <Link to={"/CMS/Jobs"}>Jobs {zahlen?.Jobs}</Link>
         </Button>
         <Button variant={"default"} asChild>
-          <Link to={"/CMS/Parnter"}>Partner {zahlen?.Partner}</Link>
+          <Link to={"/CMS/Mitarbeiter"}>Mitarbeiter {zahlen?.Mitarbeiter}</Link>
+        </Button>
+        <Button variant={"default"} asChild>
+          <Link to={"/CMS/Partner"}>Partner {zahlen?.Partner}</Link>
         </Button>
       </div>
     </div>

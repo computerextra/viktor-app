@@ -43,7 +43,13 @@ export default function AbteilungOverview() {
 
   return (
     <div className="panel">
-      <BackBtn href="/CMS" />
+      <div className="flex flex-row gap-8">
+        <BackBtn href="/CMS" />
+        {/* TODO: Auth einbauen! */}
+        <Button asChild className="mt-2">
+          <Link to="/CMS/Abteilungen/Neu">Neu</Link>
+        </Button>
+      </div>
       <div className="panel-label">Abteilungen Übersicht</div>
       <div className="p-1 mt-2">
         <DataTable data={Abteilungen ?? []} columns={column} />
