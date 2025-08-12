@@ -54,7 +54,13 @@ export default function JobOverview() {
 
   return (
     <div className="panel">
-      <BackBtn href="/CMS" />
+      <div className="flex flex-row gap-8">
+        <BackBtn href="/CMS" />
+        {/* TODO: Auth einbauen! */}
+        <Button asChild className="mt-2">
+          <Link to="/CMS/Jobs/Neu">Neu</Link>
+        </Button>
+      </div>
       <div className="panel-label">Job Übersicht</div>
       <div className="p-1 mt-2">
         <DataTable data={Jobs ?? []} columns={column} />

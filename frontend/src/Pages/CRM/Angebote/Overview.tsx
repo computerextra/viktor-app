@@ -128,7 +128,13 @@ export default function AngeboteOverview() {
 
   return (
     <div className="panel">
-      <BackBtn href="/CMS" />
+      <div className="flex flex-row gap-8">
+        <BackBtn href="/CMS" />
+        {/* TODO: Auth einbauen! */}
+        <Button asChild className="mt-2">
+          <Link to="/CMS/Angebote/Neu">Neu</Link>
+        </Button>
+      </div>
       <div className="panel-label">Angebote Üversicht</div>
       <div className="p-1 mt-2">
         <DataTable columns={columns} data={Angebote ?? []} />

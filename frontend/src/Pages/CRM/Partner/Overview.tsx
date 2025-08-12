@@ -62,7 +62,7 @@ const column: ColumnDef<db.Partner>[] = [
       const x = row.original;
       return (
         <Button asChild>
-          <Link to={"/CMS/Abteilungen/" + x.ID}>Bearbeiten</Link>
+          <Link to={"/CMS/Partner/" + x.ID}>Bearbeiten</Link>
         </Button>
       );
     },
@@ -81,7 +81,13 @@ export default function PartnerOverview() {
 
   return (
     <div className="panel">
-      <BackBtn href="/CMS" />
+      <div className="flex flex-row gap-8">
+        <BackBtn href="/CMS" />
+        {/* TODO: Auth einbauen! */}
+        <Button asChild className="mt-2">
+          <Link to="/CMS/Partner/Neu">Neu</Link>
+        </Button>
+      </div>
       <div className="panel-label">Partner Übersicht</div>
       <div className="p-1 mt-2">
         <DataTable data={Partner ?? []} columns={column} />

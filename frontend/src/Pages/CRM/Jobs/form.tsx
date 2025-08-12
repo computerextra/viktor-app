@@ -7,11 +7,8 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  CreateAbteilung,
-  DeleteAbteilung,
-  UpdateAbteilung,
-} from "@/wailsjs/go/main/App";
+import { Switch } from "@/components/ui/switch";
+import { CreateJob, DeleteJob, UpdateJob } from "@/wailsjs/go/main/App";
 import type { db, main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -21,58 +18,58 @@ import z from "zod";
 
 const formSchema = z.object({
   Name: z.string(),
+  Online: z.boolean(),
 });
 
-export default function AbteilungForm({
-  Abteilung,
-}: {
-  Abteilung?: db.Abteilung;
-}) {
+export default function JobForm({ Job }: { Job?: db.Job }) {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Name: Abteilung?.Name ?? "",
+      Name: Job?.Name ?? "",
+      Online: Job?.Online ?? false,
     },
   });
 
   useEffect(() => {
-    if (Abteilung == null) return;
+    if (Job == null) return;
 
     form.reset({
-      Name: Abteilung.Name,
+      Name: Job.Name,
+      Online: Job.Online,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [Abteilung]);
+  }, [Job]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const props: main.AbteilungProps = {
+    const props: main.JobProps = {
       Name: values.Name,
+      Online: values.Online,
     };
-    if (Abteilung == null) {
-      const res = await CreateAbteilung(props);
+    if (Job == null) {
+      const res = await CreateJob(props);
       if (res) {
-        navigate("/CMS/Abteilungen");
+        navigate("/CMS/Jobs");
       } else {
-        alert("Fehler beim anlegen von Abteilung");
+        alert("Fehler beim anlegen von Job");
       }
     } else {
-      const res = await UpdateAbteilung(Abteilung.ID, props);
+      const res = await UpdateJob(Job.ID, props);
       if (res) {
-        navigate("/CMS/Abteilungen");
+        navigate("/CMS/Jobs");
       } else {
-        alert("Fehler beim aktualisieren von Abteilung");
+        alert("Fehler beim aktualisieren von Job");
       }
     }
   };
 
   const handleDelete = async () => {
-    if (Abteilung == null) return;
-    const res = await DeleteAbteilung(Abteilung.ID);
+    if (Job == null) return;
+    const res = await DeleteJob(Job.ID);
     if (res) {
-      navigate("/CMS/Abteilungen");
+      navigate("/CMS/Jobs");
     } else {
-      alert("Fehler beim löschen der Abteilung");
+      alert("Fehler beim löschen des Jobs");
     }
   };
 
@@ -92,12 +89,29 @@ export default function AbteilungForm({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="Online"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                <div className="space-y-0.5">
+                  <FormLabel>Online</FormLabel>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <Button type="submit">Speichern</Button>
         </form>
       </Form>
-      {Abteilung != null && (
+      {Job != null && (
         <Button variant={"destructive"} className="mt-5" onClick={handleDelete}>
-          Abteilung löschen
+          Job löschen
         </Button>
       )}
     </div>

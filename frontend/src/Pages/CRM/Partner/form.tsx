@@ -19,6 +19,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import z from "zod";
 
+// TODO: ALLES
+
 const formSchema = z.object({
   Name: z.string(),
 });
@@ -42,7 +44,6 @@ export default function AbteilungForm({
     form.reset({
       Name: Abteilung.Name,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Abteilung]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -72,7 +73,7 @@ export default function AbteilungForm({
     if (res) {
       navigate("/CMS/Abteilungen");
     } else {
-      alert("Fehler beim löschen der Abteilung");
+      alert("Fehler beim ölöschen der Abteilung");
     }
   };
 

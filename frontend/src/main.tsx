@@ -1,21 +1,29 @@
+import { Newspaper } from "lucide-react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router";
 import "./index.css";
 import Layout from "./Layout";
 import Archiv from "./Pages/Archiv";
+import EditAbteilung from "./Pages/CRM/Abteilung/id";
+import NewAbteilung from "./Pages/CRM/Abteilung/neu";
+import AbteilungOverview from "./Pages/CRM/Abteilung/Overview";
+import EditAngebot from "./Pages/CRM/Angebote/id";
+import NewAngebot from "./Pages/CRM/Angebote/neu";
+import AngeboteOverview from "./Pages/CRM/Angebote/Overview";
+import EditJob from "./Pages/CRM/Jobs/id";
+import NewJob from "./Pages/CRM/Jobs/neu";
+import JobOverview from "./Pages/CRM/Jobs/Overview";
+import EditMitarbeiter from "./Pages/CRM/Mitarbeiter/id";
+import NewMitarbeiter from "./Pages/CRM/Mitarbeiter/neu";
+import MitarbeiterOverview from "./Pages/CRM/Mitarbeiter/Overview";
+import CmsOverview from "./Pages/CRM/Overview";
+import EditPartner from "./Pages/CRM/Partner/id";
+import PartnerOverview from "./Pages/CRM/Partner/Overview";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
 import Kundensuche from "./Pages/Kundensuche";
-import CmsOverview from "./Pages/CRM/Overview";
-import AbteilungOverview from "./Pages/CRM/Abteilung/Overview";
-import AngeboteOverview from "./Pages/CRM/Angebote/Overview";
-import MitarbeiterOverview from "./Pages/CRM/Mitarbeiter/Overview";
-import JobOverview from "./Pages/CRM/Jobs/Overview";
-import PartnerOverview from "./Pages/CRM/Partner/Overview";
-import EditAbteilung from "./Pages/CRM/Abteilung/id";
-import NewAbteilung from "./Pages/CRM/Abteilung/neu";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -54,15 +62,23 @@ createRoot(document.getElementById("root")!).render(
             </Route>
             <Route path="Angebote">
               <Route index element={<AngeboteOverview />} />
+              <Route path="Neu" element={<NewAngebot />} />
+              <Route path=":id" element={<EditAngebot />} />
             </Route>
             <Route path="Mitarbeiter">
               <Route index element={<MitarbeiterOverview />} />
+              <Route path="Neu" element={<NewMitarbeiter />} />
+              <Route path=":id" element={<EditMitarbeiter />} />
             </Route>
             <Route path="Jobs">
               <Route index element={<JobOverview />} />
+              <Route path="Neu" element={<NewJob />} />
+              <Route path=":id" element={<EditJob />} />
             </Route>
             <Route path="Partner">
               <Route index element={<PartnerOverview />} />
+              <Route path="Neu" element={<Newspaper />} />
+              <Route path=":id" element={<EditPartner />} />
             </Route>
           </Route>
           <Route path="SN">
@@ -83,5 +99,5 @@ createRoot(document.getElementById("root")!).render(
         </Route>
       </Routes>
     </HashRouter>
-  </StrictMode>,
+  </StrictMode>
 );
