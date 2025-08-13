@@ -1,11 +1,10 @@
 import BackBtn from "@/components/BackBtn";
 import { GetAbteilung } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
+import { SignedIn } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import AbteilungForm from "./form";
-
-//   TODO: Auth einbauen
 
 export default function EditAbteilung() {
   const { id } = useParams();
@@ -22,12 +21,14 @@ export default function EditAbteilung() {
   }, [id]);
 
   return (
-    <div className="panel">
-      <BackBtn href="/CMS/Abteilungen" />
-      <div className="panel-label">{Abteilung?.Name} bearbeiten</div>
-      <div className="p-2 mt-2">
-        <AbteilungForm Abteilung={Abteilung} />
+    <SignedIn>
+      <div className="panel">
+        <BackBtn href="/CMS/Abteilungen" />
+        <div className="panel-label">{Abteilung?.Name} bearbeiten</div>
+        <div className="p-2 mt-2">
+          <AbteilungForm Abteilung={Abteilung} />
+        </div>
       </div>
-    </div>
+    </SignedIn>
   );
 }

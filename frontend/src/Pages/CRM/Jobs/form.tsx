@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import useAdmin from "@/hooks/useAdmin";
 import { CreateJob, DeleteJob, UpdateJob } from "@/wailsjs/go/main/App";
 import type { db, main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,6 +23,7 @@ const formSchema = z.object({
 });
 
 export default function JobForm({ Job }: { Job?: db.Job }) {
+  const admin = useAdmin();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,7 +86,7 @@ export default function JobForm({ Job }: { Job?: db.Job }) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input disabled={!admin} {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -99,6 +101,7 @@ export default function JobForm({ Job }: { Job?: db.Job }) {
                 </div>
                 <FormControl>
                   <Switch
+                    disabled={!admin}
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
@@ -106,11 +109,18 @@ export default function JobForm({ Job }: { Job?: db.Job }) {
               </FormItem>
             )}
           />
-          <Button type="submit">Speichern</Button>
+          <Button disabled={!admin} type="submit">
+            Speichern
+          </Button>
         </form>
       </Form>
       {Job != null && (
-        <Button variant={"destructive"} className="mt-5" onClick={handleDelete}>
+        <Button
+          disabled={!admin}
+          variant={"destructive"}
+          className="mt-5"
+          onClick={handleDelete}
+        >
           Job löschen
         </Button>
       )}

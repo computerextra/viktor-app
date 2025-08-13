@@ -1,6 +1,7 @@
 import BackBtn from "@/components/BackBtn";
 import { GetJob } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
+import { SignedIn } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import JobForm from "./form";
@@ -18,12 +19,14 @@ export default function EditJob() {
   }, [id]);
 
   return (
-    <div className="panel">
-      <BackBtn href="/CMS/Jobs" />
-      <div className="panel-label">{Job?.Name} bearbeiten</div>
-      <div className="p-2 mt-2">
-        <JobForm Job={Job} />
+    <SignedIn>
+      <div className="panel">
+        <BackBtn href="/CMS/Jobs" />
+        <div className="panel-label">{Job?.Name} bearbeiten</div>
+        <div className="p-2 mt-2">
+          <JobForm Job={Job} />
+        </div>
       </div>
-    </div>
+    </SignedIn>
   );
 }

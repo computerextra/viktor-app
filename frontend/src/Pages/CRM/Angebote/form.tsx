@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
+import useAdmin from "@/hooks/useAdmin";
 import { cn } from "@/lib/utils";
 import {
   CreateAngebot,
@@ -41,6 +42,7 @@ const formSchema = z.object({
 });
 
 export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
+  const admin = useAdmin();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -131,7 +133,7 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled={!admin} {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -143,7 +145,7 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                 <FormItem>
                   <FormLabel>Subtitle</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled={!admin} {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -157,7 +159,7 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                 <FormItem>
                   <FormLabel>Link</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled={!admin} {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -169,7 +171,7 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                 <FormItem>
                   <FormLabel>Image</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled={!admin} {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -187,6 +189,7 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                       <FormControl>
                         <Button
                           variant={"outline"}
+                          disabled={!admin}
                           className={cn(
                             "w-[240px] pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
@@ -227,6 +230,7 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                       <FormControl>
                         <Button
                           variant={"outline"}
+                          disabled={!admin}
                           className={cn(
                             "w-[240px] pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground"
@@ -267,6 +271,7 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                 </div>
                 <FormControl>
                   <Switch
+                    disabled={!admin}
                     checked={field.value}
                     onCheckedChange={field.onChange}
                   />
@@ -274,11 +279,18 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
               </FormItem>
             )}
           />
-          <Button type="submit">Speichern</Button>
+          <Button disabled={!admin} type="submit">
+            Speichern
+          </Button>
         </form>
       </Form>
       {Angebot != null && (
-        <Button variant={"destructive"} className="mt-5" onClick={handleDelete}>
+        <Button
+          disabled={!admin}
+          variant={"destructive"}
+          className="mt-5"
+          onClick={handleDelete}
+        >
           Angebot löschen
         </Button>
       )}

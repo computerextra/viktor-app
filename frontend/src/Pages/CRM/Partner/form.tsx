@@ -7,6 +7,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useAdmin from "@/hooks/useAdmin";
 import {
   CreatePartner,
   DeletePartner,
@@ -26,6 +27,7 @@ const formSchema = z.object({
 });
 
 export default function PartnerForm({ Partner }: { Partner?: db.Partner }) {
+  const admin = useAdmin();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -91,7 +93,7 @@ export default function PartnerForm({ Partner }: { Partner?: db.Partner }) {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input disabled={!admin} {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -103,7 +105,7 @@ export default function PartnerForm({ Partner }: { Partner?: db.Partner }) {
               <FormItem>
                 <FormLabel>Bild</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input disabled={!admin} {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -115,16 +117,23 @@ export default function PartnerForm({ Partner }: { Partner?: db.Partner }) {
               <FormItem>
                 <FormLabel>Link</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input disabled={!admin} {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit">Speichern</Button>
+          <Button disabled={!admin} type="submit">
+            Speichern
+          </Button>
         </form>
       </Form>
       {Partner != null && (
-        <Button variant={"destructive"} className="mt-5" onClick={handleDelete}>
+        <Button
+          disabled={!admin}
+          variant={"destructive"}
+          className="mt-5"
+          onClick={handleDelete}
+        >
           Partner löschen
         </Button>
       )}

@@ -13,6 +13,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { GetAngebote, ToggleAngebot } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
 import { WindowReload } from "@/wailsjs/runtime/runtime";
+import { SignedIn } from "@clerk/clerk-react";
 import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross, MoreHorizontal } from "lucide-react";
@@ -161,18 +162,20 @@ export default function AngeboteOverview() {
   }, []);
 
   return (
-    <div className="panel">
-      <div className="flex flex-row gap-8">
-        <BackBtn href="/CMS" />
-        {/* TODO: Auth einbauen! */}
-        <Button asChild className="mt-2">
-          <Link to="/CMS/Angebote/Neu">Neu</Link>
-        </Button>
+    <SignedIn>
+      <div className="panel">
+        <div className="flex flex-row gap-8">
+          <BackBtn href="/CMS" />
+
+          <Button asChild className="mt-2">
+            <Link to="/CMS/Angebote/Neu">Neu</Link>
+          </Button>
+        </div>
+        <div className="panel-label">Angebote Üversicht</div>
+        <div className="p-1 mt-2">
+          <DataTable columns={columns} data={Angebote ?? []} />
+        </div>
       </div>
-      <div className="panel-label">Angebote Üversicht</div>
-      <div className="p-1 mt-2">
-        <DataTable columns={columns} data={Angebote ?? []} />
-      </div>
-    </div>
+    </SignedIn>
   );
 }

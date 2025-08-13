@@ -3,6 +3,7 @@ import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import { GetJobs } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
+import { SignedIn } from "@clerk/clerk-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -53,18 +54,20 @@ export default function JobOverview() {
   }, []);
 
   return (
-    <div className="panel">
-      <div className="flex flex-row gap-8">
-        <BackBtn href="/CMS" />
-        {/* TODO: Auth einbauen! */}
-        <Button asChild className="mt-2">
-          <Link to="/CMS/Jobs/Neu">Neu</Link>
-        </Button>
+    <SignedIn>
+      <div className="panel">
+        <div className="flex flex-row gap-8">
+          <BackBtn href="/CMS" />
+          {/* TODO: Auth einbauen! */}
+          <Button asChild className="mt-2">
+            <Link to="/CMS/Jobs/Neu">Neu</Link>
+          </Button>
+        </div>
+        <div className="panel-label">Job Übersicht</div>
+        <div className="p-1 mt-2">
+          <DataTable data={Jobs ?? []} columns={column} />
+        </div>
       </div>
-      <div className="panel-label">Job Übersicht</div>
-      <div className="p-1 mt-2">
-        <DataTable data={Jobs ?? []} columns={column} />
-      </div>
-    </div>
+    </SignedIn>
   );
 }

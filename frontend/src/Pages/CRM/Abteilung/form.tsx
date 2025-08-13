@@ -7,6 +7,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useAdmin from "@/hooks/useAdmin";
 import {
   CreateAbteilung,
   DeleteAbteilung,
@@ -28,6 +29,8 @@ export default function AbteilungForm({
 }: {
   Abteilung?: db.Abteilung;
 }) {
+  const admin = useAdmin();
+
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -87,16 +90,23 @@ export default function AbteilungForm({
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input disabled={!admin} {...field} />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit">Speichern</Button>
+          <Button disabled={!admin} type="submit">
+            Speichern
+          </Button>
         </form>
       </Form>
       {Abteilung != null && (
-        <Button variant={"destructive"} className="mt-5" onClick={handleDelete}>
+        <Button
+          disabled={!admin}
+          variant={"destructive"}
+          className="mt-5"
+          onClick={handleDelete}
+        >
           Abteilung löschen
         </Button>
       )}

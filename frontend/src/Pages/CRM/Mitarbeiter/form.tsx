@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useAdmin from "@/hooks/useAdmin";
 import { cn } from "@/lib/utils";
 import {
   CreateMitarbeiter,
@@ -62,6 +63,7 @@ export default function MitarbeiterForm({
 }: {
   Mitarbeiter?: db.Mitarbeiter;
 }) {
+  const admin = useAdmin();
   const navigate = useNavigate();
   const [Abteilungen, setAbteilungen] = useState<db.Abteilung[] | undefined>(
     undefined
@@ -223,7 +225,7 @@ export default function MitarbeiterForm({
                 <FormItem>
                   <FormLabel>Name *</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input disabled={!admin} {...field} />
                   </FormControl>
                 </FormItem>
               )}
@@ -236,7 +238,7 @@ export default function MitarbeiterForm({
                   <FormItem>
                     <FormLabel>Short</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input disabled={!admin} {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -248,7 +250,7 @@ export default function MitarbeiterForm({
                   <FormItem>
                     <FormLabel>Mail</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input disabled={!admin} {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -261,7 +263,11 @@ export default function MitarbeiterForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Geschlecht</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      disabled={!admin}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Geschlecht wählen" />
@@ -282,7 +288,11 @@ export default function MitarbeiterForm({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Abteilung</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      disabled={!admin}
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Abteilung wählen" />
@@ -309,7 +319,7 @@ export default function MitarbeiterForm({
                   <FormItem>
                     <FormLabel>Focus (Komma getrennt)</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input disabled={!admin} {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -324,6 +334,7 @@ export default function MitarbeiterForm({
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
+                            disabled={!admin}
                             variant={"outline"}
                             className={cn(
                               "w-[240px] pl-3 text-left font-normal",
@@ -359,12 +370,19 @@ export default function MitarbeiterForm({
                 )}
               />
             </div>
-            <Button type="submit">Speichern</Button>
+            <Button disabled={!admin} type="submit">
+              Speichern
+            </Button>
           </form>
         </Form>
       )}
       {Mitarbeiter != null && (
-        <Button variant={"destructive"} className="mt-5" onClick={handleDelete}>
+        <Button
+          disabled={!admin}
+          variant={"destructive"}
+          className="mt-5"
+          onClick={handleDelete}
+        >
           Mitarbeiter löschen
         </Button>
       )}

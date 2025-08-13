@@ -1,6 +1,7 @@
 import BackBtn from "@/components/BackBtn";
 import { GetOneMitarbeiter } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
+import { SignedIn } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import MitarbeiterForm from "./form";
@@ -20,12 +21,14 @@ export default function EditMitarbeiter() {
   }, [id]);
 
   return (
-    <div className="panel">
-      <BackBtn href="/CMS/Mitarbeiter" />
-      <div className="panel-label">{Mitarbeiter?.Name} bearbeiten</div>
-      <div className="p-2 mt-2">
-        <MitarbeiterForm Mitarbeiter={Mitarbeiter} />
+    <SignedIn>
+      <div className="panel">
+        <BackBtn href="/CMS/Mitarbeiter" />
+        <div className="panel-label">{Mitarbeiter?.Name} bearbeiten</div>
+        <div className="p-2 mt-2">
+          <MitarbeiterForm Mitarbeiter={Mitarbeiter} />
+        </div>
       </div>
-    </div>
+    </SignedIn>
   );
 }

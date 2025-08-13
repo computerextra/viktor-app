@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { GetPartners } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
+import { SignedIn } from "@clerk/clerk-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
@@ -80,18 +81,20 @@ export default function PartnerOverview() {
   }, []);
 
   return (
-    <div className="panel">
-      <div className="flex flex-row gap-8">
-        <BackBtn href="/CMS" />
-        {/* TODO: Auth einbauen! */}
-        <Button asChild className="mt-2">
-          <Link to="/CMS/Partner/Neu">Neu</Link>
-        </Button>
+    <SignedIn>
+      <div className="panel">
+        <div className="flex flex-row gap-8">
+          <BackBtn href="/CMS" />
+          {/* TODO: Auth einbauen! */}
+          <Button asChild className="mt-2">
+            <Link to="/CMS/Partner/Neu">Neu</Link>
+          </Button>
+        </div>
+        <div className="panel-label">Partner Übersicht</div>
+        <div className="p-1 mt-2">
+          <DataTable data={Partner ?? []} columns={column} />
+        </div>
       </div>
-      <div className="panel-label">Partner Übersicht</div>
-      <div className="p-1 mt-2">
-        <DataTable data={Partner ?? []} columns={column} />
-      </div>
-    </div>
+    </SignedIn>
   );
 }
