@@ -1,14 +1,32 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tooltip } from "@/components/ui/tooltip";
-import { GetAngebote } from "@/wailsjs/go/main/App";
+import { GetAngebote, ToggleAngebot } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
+import { WindowReload } from "@/wailsjs/runtime/runtime";
 import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import type { ColumnDef } from "@tanstack/react-table";
-import { Check, Cross } from "lucide-react";
+import { Check, Cross, MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+
+const handleToggle = async (id: string) => {
+  const res = await ToggleAngebot(id);
+  if (res) {
+    WindowReload();
+  } else {
+    alert("Angebot konnte nicht angepasst werden");
+  }
+};
 
 const columns: ColumnDef<db.Angebot>[] = [
   {
@@ -108,9 +126,25 @@ const columns: ColumnDef<db.Angebot>[] = [
     cell: ({ row }) => {
       const x = row.original;
       return (
-        <Button asChild>
-          <Link to={"/CMS/Angebote/" + x.ID}>Bearbeiten</Link>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <Link to={"/CMS/Angebote/" + x.ID}>Bearbeiten</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem onClick={async () => await handleToggle(x.ID)}>
+              Toggle
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },

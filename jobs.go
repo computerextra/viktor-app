@@ -38,9 +38,9 @@ func (a *App) CreateJob(props JobProps) bool {
 	})
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return true
+		return false
 	}
-	return false
+	return true
 }
 
 func (a *App) UpdateJob(id string, props JobProps) bool {

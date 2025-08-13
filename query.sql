@@ -42,6 +42,9 @@ title=?, subtitle=?, date_start=?,
 date_stop=?, link=?, image=?, anzeigen=?
 WHERE id=?;
 
+-- name: ToggleAngebot :exec
+UPDATE Angebot SET anzeigen=? WHERE id=?;
+
 -- name: DeleteAngebot :exec
 DELETE FROM Angebot WHERE id=?;
 

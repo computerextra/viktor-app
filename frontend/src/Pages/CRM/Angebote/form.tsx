@@ -71,19 +71,17 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
   }, [Angebot]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    let y: string,
-      m: number,
-      d: string = "";
+    let y: number, m: number, d: number;
 
-    y = values.Start.getFullYear().toString();
+    y = values.Start.getFullYear();
     m = values.Start.getMonth() + 1;
-    d = values.Start.getDate().toString();
-    const start = `${y}-${m}-${d}`;
+    d = values.Start.getDate();
+    const start = `${y}-${m < 10 ? "0" + m : m}-${d < 10 ? "0" + d : d}`;
 
-    y = values.Stop.getFullYear().toString();
+    y = values.Stop.getFullYear();
     m = values.Stop.getMonth() + 1;
-    d = values.Stop.getDate().toString();
-    const end = `${y}-${m}-${d}`;
+    d = values.Stop.getDate();
+    const end = `${y}-${m < 10 ? "0" + m : m}-${d < 10 ? "0" + d : d}`;
 
     const props: main.AngebotProps = {
       Anzeigen: values.Anzeigen,
@@ -195,7 +193,9 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, "PPP", {
+                              locale: de,
+                            })
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -209,9 +209,6 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                         selected={field.value}
                         onSelect={field.onChange}
                         locale={de}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
                         captionLayout="dropdown"
                       />
                     </PopoverContent>
@@ -236,7 +233,9 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, "PPP", {
+                              locale: de,
+                            })
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -250,9 +249,6 @@ export default function AngebotForm({ Angebot }: { Angebot?: db.Angebot }) {
                         selected={field.value}
                         locale={de}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
                         captionLayout="dropdown"
                       />
                     </PopoverContent>

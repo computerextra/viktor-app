@@ -1,4 +1,3 @@
-import { Newspaper } from "lucide-react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { HashRouter, Route, Routes } from "react-router";
@@ -19,6 +18,7 @@ import NewMitarbeiter from "./Pages/CRM/Mitarbeiter/neu";
 import MitarbeiterOverview from "./Pages/CRM/Mitarbeiter/Overview";
 import CmsOverview from "./Pages/CRM/Overview";
 import EditPartner from "./Pages/CRM/Partner/id";
+import NewPartner from "./Pages/CRM/Partner/neu";
 import PartnerOverview from "./Pages/CRM/Partner/Overview";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
@@ -77,7 +77,7 @@ createRoot(document.getElementById("root")!).render(
             </Route>
             <Route path="Partner">
               <Route index element={<PartnerOverview />} />
-              <Route path="Neu" element={<Newspaper />} />
+              <Route path="Neu" element={<NewPartner />} />
               <Route path=":id" element={<EditPartner />} />
             </Route>
           </Route>

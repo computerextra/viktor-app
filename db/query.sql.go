@@ -1251,6 +1251,20 @@ func (q *Queries) SkipEinkauf(ctx context.Context, arg SkipEinkaufParams) error 
 	return err
 }
 
+const toggleAngebot = `-- name: ToggleAngebot :exec
+UPDATE Angebot SET anzeigen=? WHERE id=?
+`
+
+type ToggleAngebotParams struct {
+	Anzeigen bool
+	ID       string
+}
+
+func (q *Queries) ToggleAngebot(ctx context.Context, arg ToggleAngebotParams) error {
+	_, err := q.db.ExecContext(ctx, toggleAngebot, arg.Anzeigen, arg.ID)
+	return err
+}
+
 const updateAbteilung = `-- name: UpdateAbteilung :exec
 UPDATE Abteilung SET name=? WHERE id=?
 `

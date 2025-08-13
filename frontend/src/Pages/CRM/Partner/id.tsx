@@ -1,32 +1,28 @@
 import BackBtn from "@/components/BackBtn";
-import { GetAbteilung } from "@/wailsjs/go/main/App";
+import { GetParnter } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import AbteilungForm from "./form";
-
-// TODO: ALLES
+import PartnerForm from "./form";
 
 export default function EditPartner() {
   const { id } = useParams();
-  const [Abteilung, setAbteilung] = useState<db.Abteilung | undefined>(
-    undefined
-  );
+  const [Partner, setPartner] = useState<db.Partner | undefined>(undefined);
 
   useEffect(() => {
     (async () => {
       if (id == null) return;
-      const res = await GetAbteilung(id);
-      setAbteilung(res);
+      const res = await GetParnter(id);
+      setPartner(res);
     })();
   }, [id]);
 
   return (
     <div className="panel">
-      <BackBtn href="/CMS/Abteilungen" />
-      <div className="panel-label">{Abteilung?.Name} bearbeiten</div>
+      <BackBtn href="/CMS/Partner" />
+      <div className="panel-label">{Partner?.Name} bearbeiten</div>
       <div className="p-2 mt-2">
-        <AbteilungForm Abteilung={Abteilung} />
+        <PartnerForm Partner={Partner} />
       </div>
     </div>
   );

@@ -164,7 +164,7 @@ export default function MitarbeiterForm({
       y = values.Geburtstag.getFullYear();
       m = values.Geburtstag.getMonth() + 1;
       d = values.Geburtstag.getDate();
-      bday = `${y}-${m}-${d}`;
+      bday = `${y}-${m < 10 ? "0" + m : m}-${d < 10 ? "0" + d : d}`;
     }
     const props: main.MitarbeiterProps = {
       Azubi: values.Azubi,
@@ -331,7 +331,9 @@ export default function MitarbeiterForm({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPP")
+                              format(field.value, "PPP", {
+                                locale: de,
+                              })
                             ) : (
                               <span>Pick a date</span>
                             )}

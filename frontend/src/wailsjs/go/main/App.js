@@ -186,6 +186,10 @@ export function SyncLabel() {
   return window['go']['main']['App']['SyncLabel']();
 }
 
+export function ToggleAngebot(arg1) {
+  return window['go']['main']['App']['ToggleAngebot'](arg1);
+}
+
 export function UpdateAbteilung(arg1, arg2) {
   return window['go']['main']['App']['UpdateAbteilung'](arg1, arg2);
 }

@@ -95,6 +95,8 @@ export function SyncAussteller():Promise<boolean>;
 
 export function SyncLabel():Promise<boolean>;
 
+export function ToggleAngebot(arg1:string):Promise<boolean>;
+
 export function UpdateAbteilung(arg1:string,arg2:main.AbteilungProps):Promise<boolean>;
 
 export function UpdateAngebot(arg1:string,arg2:main.AngebotProps):Promise<boolean>;

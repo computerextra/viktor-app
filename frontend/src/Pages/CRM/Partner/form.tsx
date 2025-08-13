@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  CreateAbteilung,
-  DeleteAbteilung,
-  UpdateAbteilung,
+  CreatePartner,
+  DeletePartner,
+  UpdatePartner,
 } from "@/wailsjs/go/main/App";
 import type { db, main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,48 +19,51 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import z from "zod";
 
-// TODO: ALLES
-
 const formSchema = z.object({
   Name: z.string(),
+  Link: z.url(),
+  Image: z.string(),
 });
 
-export default function AbteilungForm({
-  Abteilung,
-}: {
-  Abteilung?: db.Abteilung;
-}) {
+export default function PartnerForm({ Partner }: { Partner?: db.Partner }) {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Name: Abteilung?.Name ?? "",
+      Name: Partner?.Name ?? "",
+      Link: Partner?.Link ?? "",
+      Image: Partner?.Image ?? "",
     },
   });
 
   useEffect(() => {
-    if (Abteilung == null) return;
+    if (Partner == null) return;
 
     form.reset({
-      Name: Abteilung.Name,
+      Name: Partner.Name,
+      Image: Partner.Image,
+      Link: Partner.Link,
     });
-  }, [Abteilung]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Partner]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const props: main.AbteilungProps = {
+    const props: main.PartnerProps = {
       Name: values.Name,
+      Link: values.Link,
+      Image: values.Image,
     };
-    if (Abteilung == null) {
-      const res = await CreateAbteilung(props);
+    if (Partner == null) {
+      const res = await CreatePartner(props);
       if (res) {
-        navigate("/CMS/Abteilungen");
+        navigate("/CMS/Partner");
       } else {
         alert("Fehler beim anlegen von Abteilung");
       }
     } else {
-      const res = await UpdateAbteilung(Abteilung.ID, props);
+      const res = await UpdatePartner(Partner.ID, props);
       if (res) {
-        navigate("/CMS/Abteilungen");
+        navigate("/CMS/Partner");
       } else {
         alert("Fehler beim aktualisieren von Abteilung");
       }
@@ -68,12 +71,12 @@ export default function AbteilungForm({
   };
 
   const handleDelete = async () => {
-    if (Abteilung == null) return;
-    const res = await DeleteAbteilung(Abteilung.ID);
+    if (Partner == null) return;
+    const res = await DeletePartner(Partner.ID);
     if (res) {
-      navigate("/CMS/Abteilungen");
+      navigate("/CMS/Partner");
     } else {
-      alert("Fehler beim ölöschen der Abteilung");
+      alert("Fehler beim löschen des Partners");
     }
   };
 
@@ -93,12 +96,36 @@ export default function AbteilungForm({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="Image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Bild</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Link"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Link</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <Button type="submit">Speichern</Button>
         </form>
       </Form>
-      {Abteilung != null && (
+      {Partner != null && (
         <Button variant={"destructive"} className="mt-5" onClick={handleDelete}>
-          Abteilung löschen
+          Partner löschen
         </Button>
       )}
     </div>

@@ -121,3 +121,20 @@ func (a *App) DeleteAngebot(id string) bool {
 	}
 	return true
 }
+
+func (a *App) ToggleAngebot(id string) bool {
+	res, err := a.db.GetAngebot(a.ctx, id)
+	if err != nil {
+		runtime.LogError(a.ctx, err.Error())
+		return false
+	}
+	err = a.db.ToggleAngebot(a.ctx, db.ToggleAngebotParams{
+		Anzeigen: !res.Anzeigen,
+		ID:       id,
+	})
+	if err != nil {
+		runtime.LogError(a.ctx, err.Error())
+		return false
+	}
+	return true
+}
