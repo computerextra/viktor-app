@@ -4,7 +4,7 @@ import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import PartnerForm from "./form";
-
+//   TODO: Auth einbauen
 export default function EditPartner() {
   const { id } = useParams();
   const [Partner, setPartner] = useState<db.Partner | undefined>(undefined);

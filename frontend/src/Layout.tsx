@@ -14,7 +14,7 @@ export default function Layout() {
             <Stats />
           </div>
         </div>
-        <div className="mt-5">
+        <div className="my-5">
           <Outlet />
         </div>
       </div>

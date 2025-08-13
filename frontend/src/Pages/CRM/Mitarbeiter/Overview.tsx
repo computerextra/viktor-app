@@ -7,7 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Mars, Venus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-
+//   TODO: Auth einbauen
 const columns: ColumnDef<db.GetMitarbeiterWithAbteilungRow>[] = [
   {
     accessorKey: "Name",
@@ -78,7 +78,7 @@ const columns: ColumnDef<db.GetMitarbeiterWithAbteilungRow>[] = [
   },
 ];
 
-export default function MitarbeiterOverview() {
+export function MitarbeiterOverview() {
   const [Mitarbeiter, setMitarbeiter] = useState<
     db.GetMitarbeiterWithAbteilungRow[] | undefined
   >(undefined);

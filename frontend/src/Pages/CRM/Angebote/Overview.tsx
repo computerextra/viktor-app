@@ -18,7 +18,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross, MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-
+//   TODO: Auth einbauen
 const handleToggle = async (id: string) => {
   const res = await ToggleAngebot(id);
   if (res) {

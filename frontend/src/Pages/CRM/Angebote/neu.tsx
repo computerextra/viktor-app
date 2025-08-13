@@ -1,6 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import AngebotForm from "./form";
-
+//   TODO: Auth einbauen
 export default function NewAngebot() {
   return (
     <div className="panel">

@@ -6,7 +6,7 @@ import type { db } from "@/wailsjs/go/models";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-
+//   TODO: Auth einbauen
 const column: ColumnDef<db.Abteilung>[] = [
   {
     accessorKey: "ID",
@@ -31,7 +31,7 @@ const column: ColumnDef<db.Abteilung>[] = [
 
 export default function AbteilungOverview() {
   const [Abteilungen, setAbteilungen] = useState<db.Abteilung[] | undefined>(
-    undefined,
+    undefined
   );
 
   useEffect(() => {

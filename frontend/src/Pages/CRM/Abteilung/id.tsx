@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import AbteilungForm from "./form";
 
+//   TODO: Auth einbauen
+
 export default function EditAbteilung() {
   const { id } = useParams();
   const [Abteilung, setAbteilung] = useState<db.Abteilung | undefined>(
-    undefined,
+    undefined
   );
 
   useEffect(() => {

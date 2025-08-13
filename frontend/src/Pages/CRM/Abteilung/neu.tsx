@@ -1,6 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import AbteilungForm from "./form";
-
+//   TODO: Auth einbauen
 export default function NewAbteilung() {
   return (
     <div className="panel">

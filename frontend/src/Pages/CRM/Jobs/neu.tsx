@@ -1,6 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import JobForm from "./form";
-
+//   TODO: Auth einbauen
 export default function NewJob() {
   return (
     <div className="panel">

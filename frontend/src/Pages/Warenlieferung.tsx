@@ -16,6 +16,7 @@ export default function Warenlieferung() {
     setLoading(false);
   };
 
+  //   TODO: Auth einbauen
   return (
     <div className="panel">
       <div className="panel-label">Warenlieferung</div>

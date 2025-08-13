@@ -4,7 +4,7 @@ import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import MitarbeiterForm from "./form";
-
+//   TODO: Auth einbauen
 export default function EditMitarbeiter() {
   const { id } = useParams();
   const [Mitarbeiter, setMitarbeiter] = useState<db.Mitarbeiter | undefined>(

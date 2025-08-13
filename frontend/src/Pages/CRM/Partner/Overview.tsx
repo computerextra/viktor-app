@@ -11,7 +11,7 @@ import type { db } from "@/wailsjs/go/models";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-
+//   TODO: Auth einbauen
 const column: ColumnDef<db.Partner>[] = [
   {
     accessorKey: "ID",

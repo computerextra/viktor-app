@@ -1,6 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import PartnerForm from "./form";
-
+//   TODO: Auth einbauen
 export default function NewPartner() {
   return (
     <div className="panel">

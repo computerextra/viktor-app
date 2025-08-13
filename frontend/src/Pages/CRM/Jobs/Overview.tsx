@@ -7,7 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-
+//   TODO: Auth einbauen
 const column: ColumnDef<db.Job>[] = [
   {
     accessorKey: "ID",
