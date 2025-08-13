@@ -71,7 +71,7 @@ const columns: ColumnDef<db.GetMitarbeiterWithAbteilungRow>[] = [
       const x = row.original;
       return (
         <Button asChild>
-          <Link to={"/CMD/Mitarbeiter" + x.ID}>Bearbeiten</Link>
+          <Link to={"/CMS/Mitarbeiter/" + x.ID}>Bearbeiten</Link>
         </Button>
       );
     },

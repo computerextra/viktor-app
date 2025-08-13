@@ -1,32 +1,30 @@
 import BackBtn from "@/components/BackBtn";
-import { GetAbteilung } from "@/wailsjs/go/main/App";
+import { GetOneMitarbeiter } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import AbteilungForm from "./form";
-
-// TODO: ALLES
+import MitarbeiterForm from "./form";
 
 export default function EditMitarbeiter() {
   const { id } = useParams();
-  const [Abteilung, setAbteilung] = useState<db.Abteilung | undefined>(
+  const [Mitarbeiter, setMitarbeiter] = useState<db.Mitarbeiter | undefined>(
     undefined
   );
 
   useEffect(() => {
     (async () => {
       if (id == null) return;
-      const res = await GetAbteilung(id);
-      setAbteilung(res);
+      const res = await GetOneMitarbeiter(id);
+      setMitarbeiter(res);
     })();
   }, [id]);
 
   return (
     <div className="panel">
-      <BackBtn href="/CMS/Abteilungen" />
-      <div className="panel-label">{Abteilung?.Name} bearbeiten</div>
+      <BackBtn href="/CMS/Mitarbeiter" />
+      <div className="panel-label">{Mitarbeiter?.Name} bearbeiten</div>
       <div className="p-2 mt-2">
-        <AbteilungForm Abteilung={Abteilung} />
+        <MitarbeiterForm Mitarbeiter={Mitarbeiter} />
       </div>
     </div>
   );

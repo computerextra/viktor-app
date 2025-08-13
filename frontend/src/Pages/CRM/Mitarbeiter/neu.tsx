@@ -1,15 +1,13 @@
 import BackBtn from "@/components/BackBtn";
-import AbteilungForm from "./form";
-
-// TODO: ALLES
+import MitarbeiterForm from "./form";
 
 export default function NewMitarbeiter() {
   return (
     <div className="panel">
-      <BackBtn href="/CMS/Abteilungen" />
-      <div className="panel-label">Abteilung anlegen</div>
+      <BackBtn href="/CMS/Mitarbeiter" />
+      <div className="panel-label">Mitarbeiter anlegen</div>
       <div className="p-2 mt-2">
-        <AbteilungForm />
+        <MitarbeiterForm />
       </div>
     </div>
   );
