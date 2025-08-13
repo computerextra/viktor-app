@@ -24,11 +24,25 @@ type Warenlieferung struct {
 	ID            int32
 }
 
-func (a *App) GenerateWarenlieferung() bool {
-	AlleArtikel, err := a.db.GetWarenlieferung(a.ctx)
+func (a *App) TestWarenlieferung() bool {
+	err := a.GenerateWarenlieferung()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
 		return false
+	}
+	err = a.sendMail([]string{"johannes.kirchner@computer-extra.de"})
+	if err != nil {
+		runtime.LogError(a.ctx, err.Error())
+		return false
+	}
+	return true
+}
+
+func (a *App) GenerateWarenlieferung() error {
+	AlleArtikel, err := a.db.GetWarenlieferung(a.ctx)
+	if err != nil {
+		runtime.LogError(a.ctx, err.Error())
+		return err
 	}
 
 	var neueArtikel, gelieferteArtikel, neuePreise []Warenlieferung
@@ -37,17 +51,17 @@ func (a *App) GenerateWarenlieferung() bool {
 	Sage, err := a.getAllProducts()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	History, err := a.getLagerHistory()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	Prices, err := a.getPrices()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 
 	if len(AlleArtikel) <= 0 {
@@ -154,7 +168,7 @@ func (a *App) GenerateWarenlieferung() bool {
 		})
 		if err != nil {
 			runtime.LogError(a.ctx, err.Error())
-			return false
+			return err
 		}
 	}
 
@@ -165,7 +179,7 @@ func (a *App) GenerateWarenlieferung() bool {
 		})
 		if err != nil {
 			runtime.LogError(a.ctx, err.Error())
-			return false
+			return err
 		}
 	}
 
@@ -180,71 +194,86 @@ func (a *App) GenerateWarenlieferung() bool {
 		})
 		if err != nil {
 			runtime.LogError(a.ctx, err.Error())
-			return false
+			return err
 		}
 	}
 
-	return true
+	return nil
 }
 
 func (a *App) SendWarenlieferung() bool {
+	err := a.GenerateWarenlieferung()
+	if err != nil {
+		runtime.LogError(a.ctx, err.Error())
+		return false
+	}
 	am, err := a.db.GetMitarbeiter(a.ctx)
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
 		return false
 	}
 
-	var ma []db.Mitarbeiter
+	var ma []string
 	for _, x := range am {
 		if x.Mail.Valid && len(x.Mail.String) > 0 {
-			ma = append(ma, x)
+			ma = append(ma, x.Mail.String)
 		}
 	}
 
-	NeueArtikel, err := a.db.GetNeueArtikel(a.ctx)
+	err = a.sendMail(ma)
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
 		return false
+	}
+
+	return true
+}
+
+func (a *App) sendMail(mails []string) error {
+	NeueArtikel, err := a.db.GetNeueArtikel(a.ctx)
+	if err != nil {
+		runtime.LogError(a.ctx, err.Error())
+		return err
 	}
 	GelieferteArtikel, err := a.db.GetGelieferteArtikel(a.ctx)
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	NeuePreise, err := a.db.GetNeuePreise(a.ctx)
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	wertBestand, wertVerfügbar, err := a.getLagerWert()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	teureArtikel, err := a.getHighestSum()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	teureVerfArtikel, err := a.getHighestVerfSum()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	leichen, err := a.getLeichen()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	SN, err := a.getAlteSeriennummern()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	Verbrecher, gesamtWert, err := a.getOldAuftraege()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 
 	var body string
@@ -314,7 +343,7 @@ func (a *App) SendWarenlieferung() bool {
 			year_tmp, err := strconv.Atoi(tmp[0])
 			if err != nil {
 				runtime.LogError(a.ctx, err.Error())
-				return false
+				return err
 			}
 
 			GarantieBeginn := fmt.Sprintf("%s.%s.%s", tmp[2], tmp[1], tmp[0])
@@ -398,23 +427,23 @@ func (a *App) SendWarenlieferung() bool {
 	s, err := d.Dial()
 	if err != nil {
 		runtime.LogError(a.ctx, err.Error())
-		return false
+		return err
 	}
 	m := gomail.NewMessage()
 
-	for _, ma := range ma {
+	for _, ma := range mails {
 
-		if ma.Mail.Valid && len(ma.Mail.String) > 1 {
-			m.SetHeader("From", a.config.SMTP_FROM)
-			m.SetHeader("To", ma.Mail.String)
-			m.SetHeader("Subject", fmt.Sprintf("Warenlieferung vom %v", time.Now().Format(time.DateOnly)))
-			m.SetBody("text/html", body)
-			if err := gomail.Send(s, m); err != nil {
-				runtime.LogError(a.ctx, err.Error())
-				return false
-			}
-			m.Reset()
+		m.SetHeader("From", a.config.SMTP_FROM)
+		m.SetHeader("To", ma)
+		m.SetHeader("Subject", fmt.Sprintf("Warenlieferung vom %v", time.Now().Format(time.DateOnly)))
+		m.SetBody("text/html", body)
+		if err := gomail.Send(s, m); err != nil {
+			runtime.LogError(a.ctx, err.Error())
+			return err
 		}
+		m.Reset()
+
 	}
-	return true
+
+	return nil
 }

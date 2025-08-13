@@ -15,7 +15,7 @@ import NewJob from "./Pages/CRM/Jobs/neu";
 import JobOverview from "./Pages/CRM/Jobs/Overview";
 import EditMitarbeiter from "./Pages/CRM/Mitarbeiter/id";
 import NewMitarbeiter from "./Pages/CRM/Mitarbeiter/neu";
-import MitarbeiterOverview from "./Pages/CRM/Mitarbeiter/Overview";
+import { MitarbeiterOverview as CMSMitarbeiterOverview } from "./Pages/CRM/Mitarbeiter/Overview";
 import CmsOverview from "./Pages/CRM/Overview";
 import EditPartner from "./Pages/CRM/Partner/id";
 import NewPartner from "./Pages/CRM/Partner/neu";
@@ -24,6 +24,8 @@ import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
 import Kundensuche from "./Pages/Kundensuche";
+import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
+import Warenlieferung from "./Pages/Warenlieferung";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -36,7 +38,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path=":id" element={<Eingabe />} />
           </Route>
           <Route path="Mitarbeiter">
-            <Route index element={<>Mitarbeiter</>} />
+            <Route index element={<MitarbeiterOverview />} />
+            <Route path=":id" element={<>Info</>} />
           </Route>
           <Route path="Lieferanten">
             <Route index element={<>Lieferanten</>} />
@@ -51,7 +54,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<Kundensuche />} />
           </Route>
           <Route path="Warenlieferung">
-            <Route index element={<>Warenlieferung</>} />
+            <Route index element={<Warenlieferung />} />
           </Route>
           <Route path="CMS">
             <Route index element={<CmsOverview />} />
@@ -66,7 +69,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path=":id" element={<EditAngebot />} />
             </Route>
             <Route path="Mitarbeiter">
-              <Route index element={<MitarbeiterOverview />} />
+              <Route index element={<CMSMitarbeiterOverview />} />
               <Route path="Neu" element={<NewMitarbeiter />} />
               <Route path=":id" element={<EditMitarbeiter />} />
             </Route>

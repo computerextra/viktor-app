@@ -186,6 +186,10 @@ export function SyncLabel() {
   return window['go']['main']['App']['SyncLabel']();
 }
 
+export function TestWarenlieferung() {
+  return window['go']['main']['App']['TestWarenlieferung']();
+}
+
 export function ToggleAngebot(arg1) {
   return window['go']['main']['App']['ToggleAngebot'](arg1);
 }

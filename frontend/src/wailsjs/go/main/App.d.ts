@@ -33,7 +33,7 @@ export function DeleteMitabeiter(arg1:string):Promise<boolean>;
 
 export function DeletePartner(arg1:string):Promise<boolean>;
 
-export function GenerateWarenlieferung():Promise<boolean>;
+export function GenerateWarenlieferung():Promise<void>;
 
 export function GetAbteilung(arg1:string):Promise<db.Abteilung>;
 
@@ -94,6 +94,8 @@ export function SucheSeriennummer(arg1:string):Promise<any>;
 export function SyncAussteller():Promise<boolean>;
 
 export function SyncLabel():Promise<boolean>;
+
+export function TestWarenlieferung():Promise<boolean>;
 
 export function ToggleAngebot(arg1:string):Promise<boolean>;
 
