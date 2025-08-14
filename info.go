@@ -4,7 +4,6 @@ import (
 	"crypto/tls"
 	"fmt"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 	gomail "gopkg.in/gomail.v2"
 )
 
@@ -23,7 +22,7 @@ func (a *App) SendInfoMail(props InfoProps) bool {
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	s, err := d.Dial()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Mail Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -35,7 +34,7 @@ func (a *App) SendInfoMail(props InfoProps) bool {
 	m.SetBody("text/html", getInfoMailBody())
 	err = gomail.Send(s, m)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Mail Fehler: %s", err.Error()))
 		return false
 	}
 	return true

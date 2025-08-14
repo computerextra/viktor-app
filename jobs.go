@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"viktor/db"
 
 	"github.com/lucsky/cuid"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type JobProps struct {
@@ -15,7 +15,7 @@ type JobProps struct {
 func (a *App) GetJobs() []db.Job {
 	res, err := a.db.GetJobs(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return res
@@ -24,7 +24,7 @@ func (a *App) GetJobs() []db.Job {
 func (a *App) GetJob(id string) *db.Job {
 	res, err := a.db.GetJob(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &res
@@ -37,7 +37,7 @@ func (a *App) CreateJob(props JobProps) bool {
 		Online: props.Online,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -50,7 +50,7 @@ func (a *App) UpdateJob(id string, props JobProps) bool {
 		ID:     id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -59,7 +59,7 @@ func (a *App) UpdateJob(id string, props JobProps) bool {
 func (a *App) DeleteJob(id string) bool {
 	err := a.db.DeleteJob(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true

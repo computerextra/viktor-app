@@ -29,12 +29,12 @@ type EinkaufUpdateProps struct {
 func (a *App) UploadImage(id string, nr int) string {
 	DialogFile, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Lesefehler: %s", err.Error()))
 		return ""
 	}
 	file, err := os.Open(DialogFile)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Lesefehler: %s", err.Error()))
 		return ""
 	}
 	defer file.Close()
@@ -48,20 +48,20 @@ func (a *App) UploadImage(id string, nr int) string {
 
 	ftpClient, err := ftp.Dial(fmt.Sprintf("%s:%v", a.config.FTP_SERVER, a.config.FTP_PORT), ftp.DialWithTimeout(5*time.Second))
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("FTP Fehler: %s", err.Error()))
 		return ""
 	}
 	defer ftpClient.Quit()
 
 	if err := ftpClient.Login(a.config.FTP_USER, a.config.FTP_PASS); err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("FTP Fehler: %s", err.Error()))
 		return ""
 	}
 
 	ftpClient.Delete(remoteFile)
 
 	if err := ftpClient.Stor(remoteFile, file); err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("FTP Fehler: %s", err.Error()))
 		return ""
 	}
 
@@ -126,7 +126,7 @@ func (a *App) UpdateEinkauf(props EinkaufUpdateProps) bool {
 			Abgeschickt: abgeschickt,
 		})
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return false
 		}
 		err = a.db.LinkEinkauf(a.ctx, db.LinkEinkaufParams{
@@ -137,7 +137,7 @@ func (a *App) UpdateEinkauf(props EinkaufUpdateProps) bool {
 			ID: props.MitarbeiterId,
 		})
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return false
 		}
 	}
@@ -155,7 +155,7 @@ func (a *App) UpdateEinkauf(props EinkaufUpdateProps) bool {
 		Abgeschickt: abgeschickt,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -170,7 +170,7 @@ func (a *App) SkipEinkauf(id string) bool {
 		ID:          id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -185,7 +185,7 @@ func (a *App) DeleteEinkauf(id string) bool {
 		ID:          id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -202,7 +202,7 @@ func (a *App) GetEinkaufsliste() []db.GetEinkaufslisteRow {
 func (a *App) GetEinkauf(id string) *db.GetEinkaufRow {
 	ma, err := a.db.GetEinkauf(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &ma

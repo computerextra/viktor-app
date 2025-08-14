@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"viktor/db"
 
 	"github.com/lucsky/cuid"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type LieferantenResponse struct {
@@ -18,14 +18,14 @@ func (a *App) GetLieferanten() []LieferantenResponse {
 
 	res, err := a.db.GetLieferanten(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 
 	for _, lieferant := range res {
 		aps, err := a.db.GetAnsprechpartnerFromLieferant(a.ctx, lieferant.ID)
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return nil
 		}
 		response = append(response, LieferantenResponse{
@@ -39,12 +39,12 @@ func (a *App) GetLieferanten() []LieferantenResponse {
 func (a *App) GetLieferant(id string) *LieferantenResponse {
 	res, err := a.db.GetLieferant(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	aps, err := a.db.GetAnsprechpartnerFromLieferant(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &LieferantenResponse{
@@ -79,7 +79,7 @@ func (a *App) CreateLieferant(props LieferantenProps) bool {
 		Webseite:     Webseite,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -104,7 +104,7 @@ func (a *App) UpdateLieferant(id string, props LieferantenProps) bool {
 		ID:           id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -113,7 +113,7 @@ func (a *App) UpdateLieferant(id string, props LieferantenProps) bool {
 func (a *App) DeleteLieferant(id string) bool {
 	err := a.db.DeleteLieferant(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true

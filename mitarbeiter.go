@@ -2,13 +2,13 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"math"
 	"sort"
 	"time"
 	"viktor/db"
 
 	"github.com/lucsky/cuid"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type Geburtstag struct {
@@ -26,7 +26,7 @@ type Geburtstagsliste struct {
 func (a *App) GetGeburtstagsliste() *Geburtstagsliste {
 	ma, err := a.db.GetMitarbeiter(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 
@@ -83,7 +83,7 @@ func (a *App) GetGeburtstagsliste() *Geburtstagsliste {
 func (a *App) GetMitarbeiter() []db.Mitarbeiter {
 	ma, err := a.db.GetMitarbeiter(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return ma
@@ -92,7 +92,7 @@ func (a *App) GetMitarbeiter() []db.Mitarbeiter {
 func (a *App) GetOneMitarbeiter(id string) *db.Mitarbeiter {
 	ma, err := a.db.GetOneMitarbeiter(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &ma
@@ -101,7 +101,7 @@ func (a *App) GetOneMitarbeiter(id string) *db.Mitarbeiter {
 func (a *App) GetMitarbeiterMitAbteilung() []db.GetMitarbeiterWithAbteilungRow {
 	ma, err := a.db.GetMitarbeiterWithAbteilung(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return ma
@@ -110,7 +110,7 @@ func (a *App) GetMitarbeiterMitAbteilung() []db.GetMitarbeiterWithAbteilungRow {
 func (a *App) GetOneMitarbeiterMitAbteilung(id string) *db.GetOneMitarbeiterWithAbteilungRow {
 	ma, err := a.db.GetOneMitarbeiterWithAbteilung(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &ma
@@ -153,7 +153,7 @@ func (a *App) CreateMitarbeiter(props MitarbeiterProps) bool {
 	if props.Geburtstag != nil && len(*props.Geburtstag) > 0 {
 		d, err := time.Parse("2006-01-02", *props.Geburtstag)
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return false
 		}
 		Geburtstag.Time = d
@@ -229,7 +229,7 @@ func (a *App) CreateMitarbeiter(props MitarbeiterProps) bool {
 		TelefonPrivat:  TelefonPrivat,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -253,7 +253,7 @@ func (a *App) UpdateMitarbeiter(id string, props MitarbeiterProps) bool {
 	if props.Geburtstag != nil && len(*props.Geburtstag) > 0 {
 		d, err := time.Parse("2006-01-02", *props.Geburtstag)
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return false
 		}
 		Geburtstag.Time = d
@@ -329,7 +329,7 @@ func (a *App) UpdateMitarbeiter(id string, props MitarbeiterProps) bool {
 		ID:             id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -338,7 +338,7 @@ func (a *App) UpdateMitarbeiter(id string, props MitarbeiterProps) bool {
 func (a *App) DeleteMitabeiter(id string) bool {
 	err := a.db.DeleteMitarbeiter(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true

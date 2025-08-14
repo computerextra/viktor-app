@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
-
 	_ "github.com/mattn/go-adodb"
 )
 
@@ -20,12 +18,12 @@ type AccessArtikel struct {
 func (a *App) SyncLabel() bool {
 	sage, err := a.getAllProducts()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	label, err := a.readAccessDb()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -55,12 +53,12 @@ func (a *App) SyncLabel() bool {
 
 	err = a.insert(create)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	err = a.update(updates)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 

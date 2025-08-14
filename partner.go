@@ -1,16 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"viktor/db"
 
 	"github.com/lucsky/cuid"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 func (a *App) GetPartners() []db.Partner {
 	res, err := a.db.GetPartners(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return res
@@ -19,7 +19,7 @@ func (a *App) GetPartners() []db.Partner {
 func (a *App) GetParnter(id string) *db.Partner {
 	res, err := a.db.GetPartner(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &res
@@ -39,7 +39,7 @@ func (a *App) CreatePartner(props PartnerProps) bool {
 		Image: props.Image,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -53,7 +53,7 @@ func (a *App) UpdatePartner(id string, props PartnerProps) bool {
 		ID:    id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -62,7 +62,7 @@ func (a *App) UpdatePartner(id string, props PartnerProps) bool {
 func (a *App) DeletePartner(id string) bool {
 	err := a.db.DeletePartner(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true

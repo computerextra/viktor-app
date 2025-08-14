@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"viktor/db"
 
 	"github.com/lucsky/cuid"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type AbteilungProps struct {
@@ -14,7 +14,7 @@ type AbteilungProps struct {
 func (a *App) GetAbteilungen() []db.Abteilung {
 	res, err := a.db.GetAbteilungen(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return res
@@ -23,7 +23,7 @@ func (a *App) GetAbteilungen() []db.Abteilung {
 func (a *App) GetAbteilung(id string) *db.Abteilung {
 	res, err := a.db.GetAbteilung(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &res
@@ -35,7 +35,7 @@ func (a *App) CreateAbteilung(props AbteilungProps) bool {
 		Name: props.Name,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -47,7 +47,7 @@ func (a *App) UpdateAbteilung(id string, props AbteilungProps) bool {
 		ID:   id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -56,7 +56,7 @@ func (a *App) UpdateAbteilung(id string, props AbteilungProps) bool {
 func (a *App) DeleteAbteilung(id string) bool {
 	err := a.db.DeleteAbteilung(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true

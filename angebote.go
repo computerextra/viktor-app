@@ -2,11 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 	"viktor/db"
 
 	"github.com/lucsky/cuid"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type AngebotProps struct {
@@ -22,7 +22,7 @@ type AngebotProps struct {
 func (a *App) GetAngebot(id string) *db.Angebot {
 	res, err := a.db.GetAngebot(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &res
@@ -31,7 +31,7 @@ func (a *App) GetAngebot(id string) *db.Angebot {
 func (a *App) GetAngebote() []db.Angebot {
 	res, err := a.db.GetAngebote(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return res
@@ -49,12 +49,12 @@ func (a *App) CreateAngebot(props AngebotProps) bool {
 
 	DateStart, err := time.Parse("2006-01-02", props.DateStart)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	DateStop, err = time.Parse("2006-01-02", props.DateStop)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -69,7 +69,7 @@ func (a *App) CreateAngebot(props AngebotProps) bool {
 		Anzeigen:  props.Anzeigen,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -87,12 +87,12 @@ func (a *App) UpdateAngebot(id string, props AngebotProps) bool {
 
 	DateStart, err := time.Parse("2006-01-02", props.DateStart)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	DateStop, err = time.Parse("2006-01-02", props.DateStop)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -107,7 +107,7 @@ func (a *App) UpdateAngebot(id string, props AngebotProps) bool {
 		ID:        id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -116,7 +116,7 @@ func (a *App) UpdateAngebot(id string, props AngebotProps) bool {
 func (a *App) DeleteAngebot(id string) bool {
 	err := a.db.DeleteAngebot(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -125,7 +125,7 @@ func (a *App) DeleteAngebot(id string) bool {
 func (a *App) ToggleAngebot(id string) bool {
 	res, err := a.db.GetAngebot(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	err = a.db.ToggleAngebot(a.ctx, db.ToggleAngebotParams{
@@ -133,7 +133,7 @@ func (a *App) ToggleAngebot(id string) bool {
 		ID:       id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true

@@ -20,7 +20,7 @@ type AusstellerProps struct {
 func (a *App) SyncAussteller() bool {
 	sage_artikel, err := a.getAusstellerArtikel()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -39,14 +39,14 @@ func (a *App) SyncAussteller() bool {
 
 	conn, err := sql.Open("mysql", a.config.DATABASE_URL)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	defer conn.Close()
 
 	_, err = conn.Exec(rawQuery)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -61,7 +61,7 @@ func (a *App) UpdateAussteller(props AusstellerProps) bool {
 		Artikelnummer: props.Artikelnummer,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -70,25 +70,25 @@ func (a *App) UpdateAussteller(props AusstellerProps) bool {
 func (a *App) UploadAusstellerImage() string {
 	DialogFile, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return ""
 	}
 	file, err := os.Open(DialogFile)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return ""
 	}
 	defer file.Close()
 
 	ftpClient, err := ftp.Dial(fmt.Sprintf("%s:%v", a.config.FTP_SERVER, a.config.FTP_PORT), ftp.DialWithTimeout(5*time.Second))
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return ""
 	}
 	defer ftpClient.Quit()
 
 	if err := ftpClient.Login(a.config.FTP_USER, a.config.FTP_PASS); err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return ""
 	}
 	path := fmt.Sprintf("https://bilder.computer-extra.de/data/%s", file.Name())
@@ -98,7 +98,7 @@ func (a *App) UploadAusstellerImage() string {
 	ftpClient.Delete(remoteFile)
 
 	if err := ftpClient.Stor(remoteFile, file); err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return ""
 	}
 

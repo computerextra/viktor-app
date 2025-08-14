@@ -9,7 +9,6 @@ import (
 	"time"
 	"viktor/db"
 
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 	gomail "gopkg.in/gomail.v2"
 )
 
@@ -27,12 +26,12 @@ type Warenlieferung struct {
 func (a *App) TestWarenlieferung() bool {
 	err := a.GenerateWarenlieferung()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	err = a.sendMail([]string{"johannes.kirchner@computer-extra.de"})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -41,7 +40,7 @@ func (a *App) TestWarenlieferung() bool {
 func (a *App) GenerateWarenlieferung() error {
 	AlleArtikel, err := a.db.GetWarenlieferung(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 
@@ -50,17 +49,17 @@ func (a *App) GenerateWarenlieferung() error {
 
 	Sage, err := a.getAllProducts()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	History, err := a.getLagerHistory()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	Prices, err := a.getPrices()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 
@@ -167,7 +166,7 @@ func (a *App) GenerateWarenlieferung() error {
 			Preis:         sql.NullTime{Valid: false},
 		})
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return err
 		}
 	}
@@ -178,7 +177,7 @@ func (a *App) GenerateWarenlieferung() error {
 			ID:   item.ID,
 		})
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return err
 		}
 	}
@@ -193,7 +192,7 @@ func (a *App) GenerateWarenlieferung() error {
 			},
 		})
 		if err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return err
 		}
 	}
@@ -204,12 +203,12 @@ func (a *App) GenerateWarenlieferung() error {
 func (a *App) SendWarenlieferung() bool {
 	err := a.GenerateWarenlieferung()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	am, err := a.db.GetMitarbeiter(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -222,7 +221,7 @@ func (a *App) SendWarenlieferung() bool {
 
 	err = a.sendMail(ma)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 
@@ -232,47 +231,47 @@ func (a *App) SendWarenlieferung() bool {
 func (a *App) sendMail(mails []string) error {
 	NeueArtikel, err := a.db.GetNeueArtikel(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	GelieferteArtikel, err := a.db.GetGelieferteArtikel(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	NeuePreise, err := a.db.GetNeuePreise(a.ctx)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	wertBestand, wertVerfügbar, err := a.getLagerWert()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	teureArtikel, err := a.getHighestSum()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	teureVerfArtikel, err := a.getHighestVerfSum()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	leichen, err := a.getLeichen()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	SN, err := a.getAlteSeriennummern()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	Verbrecher, gesamtWert, err := a.getOldAuftraege()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 
@@ -342,7 +341,7 @@ func (a *App) sendMail(mails []string) error {
 			tmp := strings.Split(strings.Replace(strings.Split(SN[i].GeBeginn, "T")[0], "-", ".", -1), ".")
 			year_tmp, err := strconv.Atoi(tmp[0])
 			if err != nil {
-				runtime.LogError(a.ctx, err.Error())
+				a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 				return err
 			}
 
@@ -426,7 +425,7 @@ func (a *App) sendMail(mails []string) error {
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 	s, err := d.Dial()
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return err
 	}
 	m := gomail.NewMessage()
@@ -438,7 +437,7 @@ func (a *App) sendMail(mails []string) error {
 		m.SetHeader("Subject", fmt.Sprintf("Warenlieferung vom %v", time.Now().Format(time.DateOnly)))
 		m.SetBody("text/html", body)
 		if err := gomail.Send(s, m); err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return err
 		}
 		m.Reset()

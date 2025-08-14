@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"viktor/db"
 
 	"github.com/lucsky/cuid"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type AnsprechpartnerProps struct {
@@ -19,7 +19,7 @@ type AnsprechpartnerProps struct {
 func (a *App) GetAnsprechpartnerFromLieferant(lieferantenId string) []db.Ansprechpartner {
 	res, err := a.db.GetAnsprechpartnerFromLieferant(a.ctx, lieferantenId)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return res
@@ -28,7 +28,7 @@ func (a *App) GetAnsprechpartnerFromLieferant(lieferantenId string) []db.Ansprec
 func (a *App) GetAnsprechpartner(id string) *db.Ansprechpartner {
 	res, err := a.db.GetAnsprechpartner(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return &res
@@ -59,7 +59,7 @@ func (a *App) CreateAnsprechpartner(props AnsprechpartnerProps) bool {
 		Lieferantid: props.LieferantenId,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -89,7 +89,7 @@ func (a *App) UpdateAnsprechpartner(id string, props AnsprechpartnerProps) bool 
 		ID:      id,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true
@@ -98,7 +98,7 @@ func (a *App) UpdateAnsprechpartner(id string, props AnsprechpartnerProps) bool 
 func (a *App) DeleteAnsprechpartner(id string) bool {
 	err := a.db.DeleteAnsprechpartner(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	return true

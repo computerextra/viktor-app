@@ -7,6 +7,7 @@ import (
 	"viktor/db"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -26,13 +27,24 @@ func NewApp() *App {
 func (a *App) startup(ctx context.Context) {
 	config := NewConfig()
 
+	a.ctx = ctx
+	a.config = config
+
 	database, err := sql.Open("mysql", config.DATABASE_URL)
 	if err != nil {
+		a.showErrorDialog("Fehler", "Es kann keine Datenbankverbindung hergestellt werden.")
 		panic(err)
 	}
 	queries := db.New(database)
 
-	a.ctx = ctx
 	a.db = queries
-	a.config = config
+}
+
+func (a *App) showErrorDialog(title, message string) {
+	runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+		Type:          runtime.ErrorDialog,
+		DefaultButton: "OK",
+		Title:         title,
+		Message:       message,
+	})
 }

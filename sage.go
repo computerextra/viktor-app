@@ -9,7 +9,6 @@ import (
 	"time"
 
 	_ "github.com/denisenkom/go-mssqldb"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type AusstellerArtikel struct {
@@ -156,14 +155,14 @@ func (a *App) getAllProducts() ([]Artikel, error) {
 func (a *App) KundenFormularSuche(Kundennummer string) *FormularKunde {
 	conn, err := sql.Open("sqlserver", a.config.SAGE_URL)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	defer conn.Close()
 
 	rows, err := conn.Query(fmt.Sprintf("SELECT Name, Vorname FROM sg_adressen WHERE KundNr LIKE '%s';", Kundennummer))
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	defer rows.Close()
@@ -174,7 +173,7 @@ func (a *App) KundenFormularSuche(Kundennummer string) *FormularKunde {
 		var name sql.NullString
 		var vorname sql.NullString
 		if err := rows.Scan(&name, &vorname); err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return nil
 		}
 		if name.Valid {
@@ -184,7 +183,7 @@ func (a *App) KundenFormularSuche(Kundennummer string) *FormularKunde {
 			res.Vorname = vorname.String
 		}
 		if err := rows.Err(); err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return nil
 		}
 	}
@@ -195,7 +194,7 @@ func (a *App) KundenFormularSuche(Kundennummer string) *FormularKunde {
 func (a *App) KundenSuche(props SearchProps) []KundenResponse {
 	conn, err := sql.Open("sqlserver", a.config.SAGE_URL)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	defer conn.Close()
@@ -204,7 +203,7 @@ func (a *App) KundenSuche(props SearchProps) []KundenResponse {
 
 	reverse, err := regexp.MatchString("^(\\d|[+]49|[0-9]+)", props.Search)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 
@@ -252,7 +251,7 @@ func (a *App) KundenSuche(props SearchProps) []KundenResponse {
 
 	rows, err := conn.Query(query)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	defer rows.Close()
@@ -274,7 +273,7 @@ func (a *App) KundenSuche(props SearchProps) []KundenResponse {
 			&x.KundUmsatz,
 			&x.LiefUmsatz,
 		); err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return nil
 		}
 		results = append(results, KundenResponse{
@@ -300,7 +299,7 @@ func (a *App) KundenSuche(props SearchProps) []KundenResponse {
 func (a *App) SucheSeriennummer(Artikelnummer string) *string {
 	conn, err := sql.Open("sqlserver", a.config.SAGE_URL)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	defer conn.Close()
@@ -309,7 +308,7 @@ func (a *App) SucheSeriennummer(Artikelnummer string) *string {
 
 	rows, err := conn.Query(query)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	defer rows.Close()
@@ -318,7 +317,7 @@ func (a *App) SucheSeriennummer(Artikelnummer string) *string {
 
 	for rows.Next() {
 		if err := rows.Scan(&result); err != nil {
-			runtime.LogError(a.ctx, err.Error())
+			a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 			return nil
 		}
 	}

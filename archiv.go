@@ -15,7 +15,7 @@ func (a *App) SearchArchive(search string) []db.SearchArchiveRow {
 		Title: fmt.Sprintf("%%%s%%", search),
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return nil
 	}
 	return res
@@ -24,32 +24,32 @@ func (a *App) SearchArchive(search string) []db.SearchArchiveRow {
 func (a *App) GetPdf(id int32) bool {
 	pdf, err := a.db.GetPdf(a.ctx, id)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Datenbank Fehler: %s", err.Error()))
 		return false
 	}
 	file, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		DefaultFilename: pdf,
 	})
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Fehler: %s", err.Error()))
 		return false
 	}
 
 	fileWrite, err := os.Create(file)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Schreibfehler: %s", err.Error()))
 		return false
 	}
 	defer fileWrite.Close()
 
 	pdfData, err := os.ReadFile(path.Join(a.config.ARCHIVE_PATH, pdf))
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Lesefehler: %s", err.Error()))
 		return false
 	}
 	_, err = fileWrite.Write(pdfData)
 	if err != nil {
-		runtime.LogError(a.ctx, err.Error())
+		a.showErrorDialog("Fehler", fmt.Sprintf("Schreibfehler: %s", err.Error()))
 		return false
 	}
 	return true
