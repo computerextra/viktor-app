@@ -1,14 +1,13 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
+import { SignedIn } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import { GetMitarbeiterMitAbteilung } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
-import { SignedIn } from "@clerk/clerk-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Mars, Venus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-//   TODO: Auth einbauen
 const columns: ColumnDef<db.GetMitarbeiterWithAbteilungRow>[] = [
   {
     accessorKey: "Name",
@@ -96,7 +95,6 @@ export function MitarbeiterOverview() {
       <div className="panel">
         <div className="flex flex-row gap-8">
           <BackBtn href="/CMS" />
-          {/* TODO: Auth einbauen! */}
           <Button asChild className="mt-2">
             <Link to="/CMS/Mitarbeiter/Neu">Neu</Link>
           </Button>

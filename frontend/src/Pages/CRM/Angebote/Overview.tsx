@@ -1,5 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
+import { SignedIn } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,13 +14,12 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { GetAngebote, ToggleAngebot } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
 import { WindowReload } from "@/wailsjs/runtime/runtime";
-import { SignedIn } from "@clerk/clerk-react";
 import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Check, Cross, MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-//   TODO: Auth einbauen
+
 const handleToggle = async (id: string) => {
   const res = await ToggleAngebot(id);
   if (res) {

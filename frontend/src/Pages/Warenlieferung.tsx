@@ -1,3 +1,4 @@
+import { SignedIn } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import { SendWarenlieferung } from "@/wailsjs/go/main/App";
 import { useState } from "react";
@@ -16,16 +17,17 @@ export default function Warenlieferung() {
     setLoading(false);
   };
 
-  //   TODO: Auth einbauen
   return (
-    <div className="panel">
-      <div className="panel-label">Warenlieferung</div>
-      <div className="p-1 mt-2">
-        <Button onClick={handleClick} disabled={loading}>
-          {loading ? "Bitte warten ..." : "Sende Warenlieferung"}
-        </Button>
-        {message && <p className="mt-5">{message}</p>}
+    <SignedIn>
+      <div className="panel">
+        <div className="panel-label">Warenlieferung</div>
+        <div className="p-1 mt-2">
+          <Button onClick={handleClick} disabled={loading}>
+            {loading ? "Bitte warten ..." : "Sende Warenlieferung"}
+          </Button>
+          {message && <p className="mt-5">{message}</p>}
+        </div>
       </div>
-    </div>
+    </SignedIn>
   );
 }

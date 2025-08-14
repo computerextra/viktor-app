@@ -3,6 +3,7 @@ module viktor
 go 1.23
 
 require (
+	github.com/AndreiTelteu/wails-configstore v0.0.2
 	github.com/denisenkom/go-mssqldb v0.12.3
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/jlaffaye/ftp v0.2.0
@@ -14,6 +15,7 @@ require (
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/bep/debounce v1.2.1 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect

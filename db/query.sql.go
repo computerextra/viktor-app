@@ -269,6 +269,28 @@ func (q *Queries) CreatePartner(ctx context.Context, arg CreatePartnerParams) (s
 	)
 }
 
+const createUser = `-- name: CreateUser :execresult
+
+INSERT INTO User (id, Username, Mail, Password) VALUES (?,?,?,?)
+`
+
+type CreateUserParams struct {
+	ID       string
+	Username string
+	Mail     string
+	Password string
+}
+
+// User --
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createUser,
+		arg.ID,
+		arg.Username,
+		arg.Mail,
+		arg.Password,
+	)
+}
+
 const createWarenlieferung = `-- name: CreateWarenlieferung :exec
 INSERT INTO Warenlieferung (
     id,         Name,       angelegt,   geliefert,
@@ -384,6 +406,15 @@ DELETE FROM Partner WHERE id=?
 
 func (q *Queries) DeletePartner(ctx context.Context, id string) error {
 	_, err := q.db.ExecContext(ctx, deletePartner, id)
+	return err
+}
+
+const deleteUser = `-- name: DeleteUser :exec
+DELETE FROM User WHERE Mail=?
+`
+
+func (q *Queries) DeleteUser(ctx context.Context, mail string) error {
+	_, err := q.db.ExecContext(ctx, deleteUser, mail)
 	return err
 }
 
@@ -1141,6 +1172,22 @@ func (q *Queries) GetStatus(ctx context.Context) (Status, error) {
 	row := q.db.QueryRowContext(ctx, getStatus)
 	var i Status
 	err := row.Scan(&i.Status, &i.Since, &i.ID)
+	return i, err
+}
+
+const getUser = `-- name: GetUser :one
+SELECT id, username, mail, password FROM User WHERE Mail=? LIMIT 1
+`
+
+func (q *Queries) GetUser(ctx context.Context, mail string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUser, mail)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Mail,
+		&i.Password,
+	)
 	return i, err
 }
 

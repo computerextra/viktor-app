@@ -539,6 +539,20 @@ export namespace main {
 	        this.Link = source["Link"];
 	    }
 	}
+	export class AuthState {
+	    username: string;
+	    mail: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AuthState(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.username = source["username"];
+	        this.mail = source["mail"];
+	    }
+	}
 	export class EinkaufUpdateProps {
 	    MitarbeiterId: string;
 	    Paypal: boolean;

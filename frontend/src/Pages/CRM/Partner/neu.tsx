@@ -1,7 +1,6 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@clerk/clerk-react";
+import { SignedIn } from "@/components/SignedIn";
 import PartnerForm from "./form";
-//   TODO: Auth einbauen
 export default function NewPartner() {
   return (
     <SignedIn>

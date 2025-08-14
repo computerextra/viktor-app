@@ -110,6 +110,13 @@ type Status struct {
 	ID     int32
 }
 
+type User struct {
+	ID       string
+	Username string
+	Mail     string
+	Password string
+}
+
 type Warenlieferung struct {
 	Name          string
 	Angelegt      time.Time

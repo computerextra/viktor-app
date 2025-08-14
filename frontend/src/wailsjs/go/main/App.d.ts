@@ -3,6 +3,8 @@
 import {main} from '../models';
 import {db} from '../models';
 
+export function CheckAdmin():Promise<boolean>;
+
 export function CreateAbteilung(arg1:main.AbteilungProps):Promise<boolean>;
 
 export function CreateAngebot(arg1:main.AngebotProps):Promise<boolean>;
@@ -47,6 +49,8 @@ export function GetAnsprechpartner(arg1:string):Promise<db.Ansprechpartner>;
 
 export function GetAnsprechpartnerFromLieferant(arg1:string):Promise<Array<db.Ansprechpartner>>;
 
+export function GetAuthState():Promise<main.AuthState>;
+
 export function GetCmsCount():Promise<db.GetCountRow>;
 
 export function GetEinkauf(arg1:string):Promise<db.GetEinkaufRow>;
@@ -80,6 +84,12 @@ export function GetPdf(arg1:number):Promise<boolean>;
 export function KundenFormularSuche(arg1:string):Promise<main.FormularKunde>;
 
 export function KundenSuche(arg1:main.SearchProps):Promise<Array<main.KundenResponse>>;
+
+export function Login(arg1:string,arg2:string):Promise<main.AuthState>;
+
+export function Logout():Promise<boolean>;
+
+export function Register(arg1:string,arg2:string,arg3:string):Promise<main.AuthState>;
 
 export function SearchArchive(arg1:string):Promise<Array<db.SearchArchiveRow>>;
 

@@ -1,5 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
+import { SignedIn } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -8,11 +9,9 @@ import {
 } from "@/components/ui/tooltip";
 import { GetPartners } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
-import { SignedIn } from "@clerk/clerk-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
-//   TODO: Auth einbauen
 const column: ColumnDef<db.Partner>[] = [
   {
     accessorKey: "ID",
@@ -85,7 +84,6 @@ export default function PartnerOverview() {
       <div className="panel">
         <div className="flex flex-row gap-8">
           <BackBtn href="/CMS" />
-          {/* TODO: Auth einbauen! */}
           <Button asChild className="mt-2">
             <Link to="/CMS/Partner/Neu">Neu</Link>
           </Button>

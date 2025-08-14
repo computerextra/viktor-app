@@ -1,5 +1,5 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@clerk/clerk-react";
+import { SignedIn } from "@/components/SignedIn";
 import AngebotForm from "./form";
 
 export default function NewAngebot() {

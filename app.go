@@ -6,6 +6,7 @@ import (
 
 	"viktor/db"
 
+	wailsconfigstore "github.com/AndreiTelteu/wails-configstore"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -15,6 +16,7 @@ type App struct {
 	ctx    context.Context
 	db     *db.Queries
 	config *Config
+	auth   *wailsconfigstore.ConfigStore
 }
 
 // NewApp creates a new App application struct
@@ -37,6 +39,12 @@ func (a *App) startup(ctx context.Context) {
 	}
 	queries := db.New(database)
 
+	configStore, err := wailsconfigstore.NewConfigStore("Viktor")
+	if err != nil {
+		a.showErrorDialog("Fehler", "Es kann keine Config gefunden werden.")
+		panic(err)
+	}
+	a.auth = configStore
 	a.db = queries
 }
 

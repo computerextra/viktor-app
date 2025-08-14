@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 06. Aug 2025 um 14:49
+-- Erstellungszeit: 14. Aug 2025 um 10:58
 -- Server-Version: 10.11.13-MariaDB-0ubuntu0.24.04.1-log
 -- PHP-Version: 7.4.33-nmm7
 
@@ -192,6 +192,19 @@ CREATE TABLE `Status` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `User`
+--
+
+CREATE TABLE `User` (
+  `id` varchar(191) NOT NULL,
+  `Username` varchar(191) NOT NULL,
+  `Mail` varchar(191) NOT NULL,
+  `Password` varchar(191) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `Warenlieferung`
 --
 
@@ -280,6 +293,14 @@ ALTER TABLE `Pdfs`
 --
 ALTER TABLE `Status`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `User`
+--
+ALTER TABLE `User`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `User_Username_key` (`Username`),
+  ADD UNIQUE KEY `User_Mail_key` (`Mail`);
 
 --
 -- Indizes für die Tabelle `Warenlieferung`

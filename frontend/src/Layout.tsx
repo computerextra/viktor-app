@@ -1,12 +1,12 @@
+import { Outlet } from "react-router";
+import Clock from "./components/Clock";
+import Links from "./components/Links";
 import {
   SignedIn,
   SignedOut,
   SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-import { Outlet } from "react-router";
-import Clock from "./components/Clock";
-import Links from "./components/Links";
+  SignOutButton,
+} from "./components/SignedIn";
 import Stats from "./components/Stats";
 import { Button } from "./components/ui/button";
 
@@ -20,7 +20,7 @@ export default function Layout() {
           </Button>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <SignOutButton />
         </SignedIn>
       </div>
       <div className="flex flex-col gap-4 w-full">

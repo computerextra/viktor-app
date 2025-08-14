@@ -1,7 +1,7 @@
 import BackBtn from "@/components/BackBtn";
+import { SignedIn } from "@/components/SignedIn";
 import { GetAbteilung } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
-import { SignedIn } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import AbteilungForm from "./form";

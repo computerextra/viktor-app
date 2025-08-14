@@ -279,6 +279,18 @@ SELECT title FROM Pdfs WHERE id=? LIMIT 1;
 -- name: GetStatus :one
 SELECT * FROM Status LIMIT 1;
 
+-- User --
+
+-- name: CreateUser :execresult
+INSERT INTO User (id, Username, Mail, Password) VALUES (?,?,?,?);
+
+-- name: GetUser :one
+SELECT * FROM User WHERE Mail=? LIMIT 1;
+
+-- name: DeleteUser :exec
+DELETE FROM User WHERE Mail=?;
+
+
 -- Warenlieferung --
 
 -- name: GetWarenlieferung :many
