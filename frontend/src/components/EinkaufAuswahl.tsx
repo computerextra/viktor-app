@@ -34,7 +34,7 @@ export function EinkaufAuswahl() {
   }, []);
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <DialogContent className="sm:max-w-[425px] dark">
       <DialogHeader>
         <DialogTitle>Mitarbeiter auswahl</DialogTitle>
         <DialogDescription>

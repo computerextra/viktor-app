@@ -11,13 +11,9 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+const VERSION = 0.1
+
 func main() {
-	// TODO: Check for Updates
-	//
-	// err := doUpdate("https://bilder.computer-extra.de/data/viktor")
-	// if err != nil {
-	// 	panic(err)
-	// }
 
 	// Create an instance of the app structure
 	app := NewApp()
@@ -40,17 +36,3 @@ func main() {
 		println("Error:", err.Error())
 	}
 }
-
-// TODO: Richtig einlesen und alles neu machen
-// func doUpdate(url string) error {
-// 	resp, err := http.Get(url)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	defer resp.Body.Close()
-// 	err = selfupdate.Apply(resp.Body, selfupdate.Options{})
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return err
-// }

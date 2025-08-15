@@ -5,6 +5,8 @@ import {db} from '../models';
 
 export function CheckAdmin():Promise<boolean>;
 
+export function CheckVersion():Promise<boolean>;
+
 export function CreateAbteilung(arg1:main.AbteilungProps):Promise<boolean>;
 
 export function CreateAngebot(arg1:main.AngebotProps):Promise<boolean>;

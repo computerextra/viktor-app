@@ -6,6 +6,10 @@ export function CheckAdmin() {
   return window['go']['main']['App']['CheckAdmin']();
 }
 
+export function CheckVersion() {
+  return window['go']['main']['App']['CheckVersion']();
+}
+
 export function CreateAbteilung(arg1) {
   return window['go']['main']['App']['CreateAbteilung'](arg1);
 }

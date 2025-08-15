@@ -23,6 +23,7 @@ import PartnerOverview from "./Pages/CRM/Partner/Overview";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
+import Info from "./Pages/Info";
 import Kundensuche from "./Pages/Kundensuche";
 import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
 import Profile from "./Pages/Profile";
@@ -97,7 +98,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<>SN</>} />
           </Route>
           <Route path="Info">
-            <Route index element={<>Info</>} />
+            <Route index element={<Info />} />
           </Route>
           <Route path="Label">
             <Route index element={<>Label</>} />

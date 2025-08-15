@@ -51,6 +51,8 @@ func (a *App) startup(ctx context.Context) {
 	}
 	a.auth = configStore
 	a.db = queries
+
+	// a.CheckVersion()
 }
 
 func (a *App) showErrorDialog(title, message string) {

@@ -125,7 +125,7 @@ export function SignOutButton() {
     }
   };
   return (
-    <div className="panel">
+    <div className="panel print:hidden">
       <div className="panel-label">Account</div>
       <div className="p-1">
         <div className="flex w-full justify-between">

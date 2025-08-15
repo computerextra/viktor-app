@@ -12,7 +12,7 @@ import Stats from "./components/Stats";
 export default function Layout() {
   return (
     <main className="container mx-auto flex flex-col mt-5">
-      <div className="mb-4">
+      <div className="mb-4 print:hidden">
         <SignedOut>
           <SignInButton />
         </SignedOut>
