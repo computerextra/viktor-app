@@ -1,5 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
+import { AdminPage } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
