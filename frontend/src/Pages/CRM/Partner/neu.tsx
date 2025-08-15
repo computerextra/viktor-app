@@ -1,9 +1,9 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import PartnerForm from "./form";
 export default function NewPartner() {
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Partner" />
         <div className="panel-label">Partner anlegen</div>
@@ -11,6 +11,6 @@ export default function NewPartner() {
           <PartnerForm />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

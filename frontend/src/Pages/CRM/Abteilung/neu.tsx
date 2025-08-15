@@ -1,10 +1,10 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import AbteilungForm from "./form";
 
 export default function NewAbteilung() {
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Abteilungen" />
         <div className="panel-label">Abteilung anlegen</div>
@@ -12,6 +12,6 @@ export default function NewAbteilung() {
           <AbteilungForm />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

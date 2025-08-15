@@ -35,6 +35,8 @@ export function DeleteMitabeiter(arg1:string):Promise<boolean>;
 
 export function DeletePartner(arg1:string):Promise<boolean>;
 
+export function DeleteProfile():Promise<boolean>;
+
 export function GenerateWarenlieferung():Promise<void>;
 
 export function GetAbteilung(arg1:string):Promise<db.Abteilung>;
@@ -89,7 +91,7 @@ export function Login(arg1:string,arg2:string):Promise<main.AuthState>;
 
 export function Logout():Promise<boolean>;
 
-export function Register(arg1:string,arg2:string,arg3:string):Promise<main.AuthState>;
+export function Register(arg1:string,arg2:string,arg3:string):Promise<boolean>;
 
 export function SearchArchive(arg1:string):Promise<Array<db.SearchArchiveRow>>;
 

@@ -1,10 +1,10 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import AngebotForm from "./form";
 
 export default function NewAngebot() {
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Angebote" />
         <div className="panel-label">Angebot anlegen</div>
@@ -12,6 +12,6 @@ export default function NewAngebot() {
           <AngebotForm />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

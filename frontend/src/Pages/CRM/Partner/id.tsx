@@ -1,5 +1,5 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import { GetParnter } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ export default function EditPartner() {
   }, [id]);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Partner" />
         <div className="panel-label">{Partner?.Name} bearbeiten</div>
@@ -26,6 +26,6 @@ export default function EditPartner() {
           <PartnerForm Partner={Partner} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

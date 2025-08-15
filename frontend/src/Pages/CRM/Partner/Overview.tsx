@@ -1,6 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -80,7 +80,7 @@ export default function PartnerOverview() {
   }, []);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <div className="flex flex-row gap-8">
           <BackBtn href="/CMS" />
@@ -93,6 +93,6 @@ export default function PartnerOverview() {
           <DataTable data={Partner ?? []} columns={column} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

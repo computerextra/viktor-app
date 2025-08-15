@@ -1,6 +1,5 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
-import { SignedIn } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -162,7 +161,7 @@ export default function AngeboteOverview() {
   }, []);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <div className="flex flex-row gap-8">
           <BackBtn href="/CMS" />
@@ -176,6 +175,6 @@ export default function AngeboteOverview() {
           <DataTable columns={columns} data={Angebote ?? []} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

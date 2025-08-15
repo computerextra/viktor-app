@@ -1,6 +1,5 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
-import { SignedIn } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import { GetMitarbeiterMitAbteilung } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
@@ -91,7 +90,7 @@ export function MitarbeiterOverview() {
   }, []);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <div className="flex flex-row gap-8">
           <BackBtn href="/CMS" />
@@ -104,6 +103,6 @@ export function MitarbeiterOverview() {
           <DataTable columns={columns} data={Mitarbeiter ?? []} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

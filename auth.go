@@ -32,34 +32,42 @@ func checkPasswordHash(password, hash string) bool {
 }
 
 func (a *App) GetAuthState() *AuthState {
-	data, err := a.auth.Get("server.json", `{"username": ""}`)
+	data, err := a.auth.Get("server.json", `{"username": "", "mail": ""}`)
 	if err != nil {
-		a.showErrorDialog("Fehler", "Fehler beim auslesen der Config Datei.")
+		a.showErrorDialog("Fehler", fmt.Sprintf("Fehler beim auslesen der Config Datei.\n%s", err.Error()))
 		return nil
 	}
+
+	if len(data) == 0 {
+		return &AuthState{
+			Username: "",
+			Mail:     "",
+		}
+	}
+
 	var authState AuthState
 	err = json.Unmarshal([]byte(data), &authState)
 	if err != nil {
-		a.showErrorDialog("Fehler", "Server Config konnte nicht gelesen werden")
+		a.showErrorDialog("Fehler", fmt.Sprintf("Server Config konnte nicht gelesen werden\n%s", err.Error()))
 		return nil
 	}
 	return &authState
 }
 
-func (a *App) Login(mail, password string) *AuthState {
-	user, err := a.db.GetUser(a.ctx, mail)
+func (a *App) Login(username, password string) *AuthState {
+	user, err := a.db.GetUser(a.ctx, username)
 	if err != nil {
-		a.showErrorDialog("Fehler", "E-Mail Adresse oder Password sind falsch")
+		a.showErrorDialog("Fehler", fmt.Sprintf("Benutzername oder Password sind falsch\n%s", err.Error()))
 		return nil
 	}
 	ok := checkPasswordHash(password, user.Password)
 	if !ok {
-		a.showErrorDialog("Fehler", "E-Mail Adresse oder Password sind falsch")
+		a.showErrorDialog("Fehler", "Benutzername oder Password sind falsch")
 		return nil
 	}
-	err = a.auth.Set("server.json", wailsconfigstore.Config(fmt.Sprintf(`{"username": %s, "mail": %s}`, user.Username, mail)))
+	err = a.auth.Set("server.json", wailsconfigstore.Config(fmt.Sprintf(`{"username": "%s", "mail": "%s"}`, username, user.Mail)))
 	if err != nil {
-		a.showErrorDialog("Fehler", "Benutzer konnte nicht angemeldet werden")
+		a.showErrorDialog("Fehler", fmt.Sprintf("Benutzer konnte nicht angemeldet werden\n%s", err.Error()))
 		return nil
 	}
 	return a.GetAuthState()
@@ -74,11 +82,11 @@ func (a *App) Logout() bool {
 	return true
 }
 
-func (a *App) Register(mail, username, password string) *AuthState {
+func (a *App) Register(mail, username, password string) bool {
 	hash, err := hashPassword(password)
 	if err != nil {
 		a.showErrorDialog("Fehler", "Fehler beim erstellen eines Passwort Hashes")
-		return nil
+		return false
 	}
 	_, err = a.db.CreateUser(a.ctx, db.CreateUserParams{
 		ID:       cuid.New(),
@@ -88,10 +96,10 @@ func (a *App) Register(mail, username, password string) *AuthState {
 	})
 	if err != nil {
 		a.showErrorDialog("Fehler", "Benutzer konnte nicht angelegt werden")
-		return nil
+		return false
 	}
 
-	return a.Login(mail, password)
+	return true
 }
 
 func (a *App) CheckAdmin() bool {
@@ -103,4 +111,19 @@ func (a *App) CheckAdmin() bool {
 		return true
 	}
 	return false
+}
+
+func (a *App) DeleteProfile() bool {
+	auth := a.GetAuthState()
+
+	if len(auth.Mail) < 5 {
+		a.showErrorDialog("Fehler", "Session passt nicht.")
+		return false
+	}
+	err := a.db.DeleteUser(a.ctx, auth.Mail)
+	if err != nil {
+		a.showErrorDialog("Fehler", "Benutzer konnte nicht gelöscht werden")
+	}
+	a.Logout()
+	return true
 }

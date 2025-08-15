@@ -25,6 +25,7 @@ import Einkauf from "./Pages/Einkauf/Einkauf";
 import Home from "./Pages/Home";
 import Kundensuche from "./Pages/Kundensuche";
 import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
+import Profile from "./Pages/Profile";
 import Warenlieferung from "./Pages/Warenlieferung";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="Profile" element={<Profile />} />
           <Route path="Einkauf">
             <Route index element={<Einkauf />} />
             <Route path=":id" element={<Eingabe />} />

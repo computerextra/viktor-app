@@ -66,6 +66,10 @@ export function DeletePartner(arg1) {
   return window['go']['main']['App']['DeletePartner'](arg1);
 }
 
+export function DeleteProfile() {
+  return window['go']['main']['App']['DeleteProfile']();
+}
+
 export function GenerateWarenlieferung() {
   return window['go']['main']['App']['GenerateWarenlieferung']();
 }

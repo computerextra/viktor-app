@@ -1,9 +1,9 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import JobForm from "./form";
 export default function NewJob() {
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Jobs" />
         <div className="panel-label">Job anlegen</div>
@@ -11,6 +11,6 @@ export default function NewJob() {
           <JobForm />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

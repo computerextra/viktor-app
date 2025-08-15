@@ -1,5 +1,5 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import { GetAbteilung } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ export default function EditAbteilung() {
   }, [id]);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Abteilungen" />
         <div className="panel-label">{Abteilung?.Name} bearbeiten</div>
@@ -29,6 +29,6 @@ export default function EditAbteilung() {
           <AbteilungForm Abteilung={Abteilung} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

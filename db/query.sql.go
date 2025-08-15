@@ -1176,11 +1176,11 @@ func (q *Queries) GetStatus(ctx context.Context) (Status, error) {
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, mail, password FROM User WHERE Mail=? LIMIT 1
+SELECT id, username, mail, password FROM User WHERE Username=? LIMIT 1
 `
 
-func (q *Queries) GetUser(ctx context.Context, mail string) (User, error) {
-	row := q.db.QueryRowContext(ctx, getUser, mail)
+func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
+	row := q.db.QueryRowContext(ctx, getUser, username)
 	var i User
 	err := row.Scan(
 		&i.ID,

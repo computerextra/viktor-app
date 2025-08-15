@@ -1,9 +1,9 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import MitarbeiterForm from "./form";
 export default function NewMitarbeiter() {
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Mitarbeiter" />
         <div className="panel-label">Mitarbeiter anlegen</div>
@@ -11,6 +11,6 @@ export default function NewMitarbeiter() {
           <MitarbeiterForm />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

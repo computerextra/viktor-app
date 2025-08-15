@@ -1,4 +1,4 @@
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import { SendWarenlieferung } from "@/wailsjs/go/main/App";
 import { useState } from "react";
@@ -18,7 +18,7 @@ export default function Warenlieferung() {
   };
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <div className="panel-label">Warenlieferung</div>
         <div className="p-1 mt-2">
@@ -28,6 +28,6 @@ export default function Warenlieferung() {
           {message && <p className="mt-5">{message}</p>}
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

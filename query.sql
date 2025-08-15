@@ -285,7 +285,7 @@ SELECT * FROM Status LIMIT 1;
 INSERT INTO User (id, Username, Mail, Password) VALUES (?,?,?,?);
 
 -- name: GetUser :one
-SELECT * FROM User WHERE Mail=? LIMIT 1;
+SELECT * FROM User WHERE Username=? LIMIT 1;
 
 -- name: DeleteUser :exec
 DELETE FROM User WHERE Mail=?;

@@ -1,5 +1,5 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import { GetAngebot } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ export default function EditAngebot() {
   }, [id]);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Angebote" />
         <div className="panel-label">{Angebot?.Title} bearbeiten</div>
@@ -27,6 +27,6 @@ export default function EditAngebot() {
           <AngebotForm Angebot={Angebot} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

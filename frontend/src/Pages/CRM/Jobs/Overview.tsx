@@ -1,6 +1,6 @@
 import BackBtn from "@/components/BackBtn";
 import { DataTable } from "@/components/DataTable";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import { GetJobs } from "@/wailsjs/go/main/App";
 import type { db } from "@/wailsjs/go/models";
@@ -53,7 +53,7 @@ export default function JobOverview() {
   }, []);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <div className="flex flex-row gap-8">
           <BackBtn href="/CMS" />
@@ -66,6 +66,6 @@ export default function JobOverview() {
           <DataTable data={Jobs ?? []} columns={column} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

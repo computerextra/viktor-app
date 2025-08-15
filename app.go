@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"viktor/db"
 
@@ -41,8 +42,12 @@ func (a *App) startup(ctx context.Context) {
 
 	configStore, err := wailsconfigstore.NewConfigStore("Viktor")
 	if err != nil {
-		a.showErrorDialog("Fehler", "Es kann keine Config gefunden werden.")
+		a.showErrorDialog("Fehler", fmt.Sprintf("Es kann keine Config gefunden werden.\n%s", err.Error()))
 		panic(err)
+	}
+	err = configStore.Set("server.json", wailsconfigstore.Config(""))
+	if err != nil {
+		a.showErrorDialog("FEHLER", err.Error())
 	}
 	a.auth = configStore
 	a.db = queries

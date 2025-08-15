@@ -1,17 +1,19 @@
+import useAdmin from "@/hooks/useAdmin";
 import useLogin from "@/hooks/useLogin";
 import { Login, Logout, Register } from "@/wailsjs/go/main/App";
 import { WindowReloadApp } from "@/wailsjs/runtime/runtime";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogDescription } from "@radix-ui/react-dialog";
 import type React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router";
 import z from "zod";
 import { Button } from "./ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -35,6 +37,15 @@ export function SignedIn({ children }: { children?: React.ReactElement }) {
   return <></>;
 }
 
+export function AdminPage({ children }: { children?: React.ReactElement }) {
+  // check login
+  const { loggedIn } = useLogin();
+  const admin = useAdmin();
+
+  if (loggedIn && admin) return <div>{children}</div>;
+  return <></>;
+}
+
 export function SignedOut({ children }: { children?: React.ReactElement }) {
   const { loggedIn } = useLogin();
 
@@ -43,7 +54,7 @@ export function SignedOut({ children }: { children?: React.ReactElement }) {
 }
 
 const signInFormSchema = z.object({
-  mail: z.email(),
+  username: z.string(),
   password: z.string(),
 });
 
@@ -62,7 +73,7 @@ const signUpFormSchema = z
       .refine((mail) => mail.includes("@computer-extra.de"), {
         message: "Bitte die Firmen E-Mail nutzen",
       })
-      .refine((mail) => mail.split("@")[0].length <= 2, {
+      .refine((mail) => mail.split("@")[0].length >= 2, {
         message: "Bitte die komplette Firmen E-Mail nutzen, keinen Alias.",
       }),
     password: z
@@ -78,7 +89,7 @@ const signUpFormSchema = z
       .refine((password) => /[0-9]/.test(password), {
         message: "Das Passwort muss Zahlen enthalten",
       })
-      .refine((password) => /[!@#$%^&*]/.test(password), {
+      .refine((password) => /[!@#$%^&?*]/.test(password), {
         message: "Das Passwort muss Sonderzeichen enthalten",
       }),
     confirmPassword: z.string(),
@@ -93,7 +104,7 @@ export function SignInButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>LogIn</Button>
+        <Button variant={"outline"}>LogIn</Button>
       </DialogTrigger>
       {showSignUp ? (
         <SignUp setShow={setShowSignUp} />
@@ -105,15 +116,36 @@ export function SignInButton() {
 }
 
 export function SignOutButton() {
+  const admin = useAdmin();
+  const { user } = useLogin();
   const handleLogout = async () => {
     const res = await Logout();
     if (res) {
       WindowReloadApp();
-    } else {
-      alert("Fehler beim Abmelden");
     }
   };
-  return <Button onClick={handleLogout}>Abmelden</Button>;
+  return (
+    <div className="panel">
+      <div className="panel-label">Account</div>
+      <div className="p-1">
+        <div className="flex w-full justify-between">
+          <div className="grid items-center ps-8">
+            <span>Angemeldet als: {user?.username}</span>
+            <span>Mail: {user?.mail}</span>
+            <span>Berechtigungen: {admin ? "Administrator" : "Benutzer"}</span>
+          </div>
+          <div className="grid ps-8 gap-2">
+            <Button variant={"outline"} asChild>
+              <Link to="/Profile">Mein Profil</Link>
+            </Button>
+            <Button variant={"outline"} onClick={handleLogout}>
+              Abmelden
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function SignIn({
@@ -126,16 +158,14 @@ function SignIn({
   });
 
   const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
-    const res = await Login(values.mail, values.password);
+    const res = await Login(values.username, values.password);
     if (res) {
       WindowReloadApp();
-    } else {
-      alert("Fehler beim Anmelden");
     }
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="dark">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <DialogHeader>
@@ -143,7 +173,7 @@ function SignIn({
             <DialogDescription>
               Noch keinen Account? -{" "}
               <span
-                className="underline"
+                className="underline cursor-pointer"
                 onClick={() => setShow((prev) => !prev)}
               >
                 Hier
@@ -154,17 +184,13 @@ function SignIn({
           <div className="grid gap-4">
             <FormField
               control={form.control}
-              name="mail"
+              name="username"
               render={({ field }) => (
                 <FormItem>
                   <div className="grid gap-3">
-                    <FormLabel>E-Mail</FormLabel>
+                    <FormLabel>Benutzername</FormLabel>
                     <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="max@muster.de"
-                        {...field}
-                      />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </div>
@@ -211,14 +237,13 @@ function SignUp({
   const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
     const res = await Register(values.mail, values.username, values.password);
     if (res) {
+      alert("Konto erfolgreich erstellt.");
       WindowReloadApp();
-    } else {
-      alert("Fehler beim Anmelden");
     }
   };
 
   return (
-    <DialogContent>
+    <DialogContent className="dark">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <DialogHeader>
@@ -226,7 +251,7 @@ function SignUp({
             <DialogDescription>
               Gibt es bereits einen Account? -{" "}
               <span
-                className="underline"
+                className="underline cursor-pointer"
                 onClick={() => setShow((prev) => !prev)}
               >
                 Hier

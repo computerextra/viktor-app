@@ -1,5 +1,5 @@
 import BackBtn from "@/components/BackBtn";
-import { SignedIn } from "@/components/SignedIn";
+import { AdminPage } from "@/components/SignedIn";
 import { GetOneMitarbeiter } from "@/wailsjs/go/main/App";
 import { db } from "@/wailsjs/go/models";
 import { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ export default function EditMitarbeiter() {
   }, [id]);
 
   return (
-    <SignedIn>
+    <AdminPage>
       <div className="panel">
         <BackBtn href="/CMS/Mitarbeiter" />
         <div className="panel-label">{Mitarbeiter?.Name} bearbeiten</div>
@@ -28,6 +28,6 @@ export default function EditMitarbeiter() {
           <MitarbeiterForm Mitarbeiter={Mitarbeiter} />
         </div>
       </div>
-    </SignedIn>
+    </AdminPage>
   );
 }

@@ -1,4 +1,5 @@
 import { DataTable } from "@/components/DataTable";
+import { AdminPage } from "@/components/SignedIn";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -83,42 +84,44 @@ export default function Archiv() {
   ];
 
   return (
-    <div className="panel">
-      <div className="panel-label">CE Archiv</div>
-      <div className="mt-5 p-1 mb-5">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="Suche"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex w-full max-w-sm items-center gap-2 mx-auto">
-                    <FormControl>
-                      <Input
-                        placeholder="Suche..."
-                        {...field}
+    <AdminPage>
+      <div className="panel">
+        <div className="panel-label">CE Archiv</div>
+        <div className="mt-5 p-1 mb-5">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="Suche"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex w-full max-w-sm items-center gap-2 mx-auto">
+                      <FormControl>
+                        <Input
+                          placeholder="Suche..."
+                          {...field}
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <Button
+                        type="submit"
+                        variant={"outline"}
                         disabled={loading}
-                      />
-                    </FormControl>
-                    <Button
-                      type="submit"
-                      variant={"outline"}
-                      disabled={loading}
-                    >
-                      {loading ? "Sucht..." : "Suchen"}
-                    </Button>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+                      >
+                        {loading ? "Sucht..." : "Suchen"}
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        </div>
+        <div className="max-w-4xl mx-auto my-2">
+          <DataTable columns={column} data={results ?? []} />
+        </div>
       </div>
-      <div className="max-w-4xl mx-auto my-2">
-        <DataTable columns={column} data={results ?? []} />
-      </div>
-    </div>
+    </AdminPage>
   );
 }
