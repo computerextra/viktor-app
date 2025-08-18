@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SucheSeriennummer } from "@/wailsjs/go/main/App";
+import { ClipboardSetText } from "@/wailsjs/runtime/runtime";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -40,8 +41,8 @@ export default function Seriennummern() {
     form.reset({
       search: "",
     });
+    await ClipboardSetText(t);
     setLoading(false);
-    navigator.clipboard.writeText(t);
   };
 
   return (

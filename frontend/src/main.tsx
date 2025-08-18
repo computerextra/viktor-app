@@ -22,6 +22,7 @@ import NewPartner from "./Pages/CRM/Partner/neu";
 import PartnerOverview from "./Pages/CRM/Partner/Overview";
 import Eingabe from "./Pages/Einkauf/Eingabe";
 import Einkauf from "./Pages/Einkauf/Einkauf";
+import Auswahl from "./Pages/Formulare";
 import Home from "./Pages/Home";
 import Info from "./Pages/Info";
 import Kundensuche from "./Pages/Kundensuche";
@@ -56,7 +57,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<>Lieferanten</>} />
           </Route>
           <Route path="Formulare">
-            <Route index element={<>Formulare</>} />
+            <Route index element={<Auswahl />} />
           </Route>
           <Route path="Archiv">
             <Route index element={<Archiv />} />

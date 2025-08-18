@@ -74,6 +74,10 @@ export function DeleteProfile() {
   return window['go']['main']['App']['DeleteProfile']();
 }
 
+export function GenerateAomeiPdf(arg1) {
+  return window['go']['main']['App']['GenerateAomeiPdf'](arg1);
+}
+
 export function GenerateWarenlieferung() {
   return window['go']['main']['App']['GenerateWarenlieferung']();
 }

@@ -525,6 +525,20 @@ export namespace main {
 	        this.LieferantenId = source["LieferantenId"];
 	    }
 	}
+	export class AomeiProps {
+	    Lizenz: string;
+	    "Gerätenummer": string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AomeiProps(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Lizenz = source["Lizenz"];
+	        this["Gerätenummer"] = source["Gerätenummer"];
+	    }
+	}
 	export class AusstellerProps {
 	    Artikelnummer: string;
 	    Link: string;

@@ -39,6 +39,8 @@ export function DeletePartner(arg1:string):Promise<boolean>;
 
 export function DeleteProfile():Promise<boolean>;
 
+export function GenerateAomeiPdf(arg1:main.AomeiProps):Promise<boolean>;
+
 export function GenerateWarenlieferung():Promise<void>;
 
 export function GetAbteilung(arg1:string):Promise<db.Abteilung>;
