@@ -27,6 +27,7 @@ import Info from "./Pages/Info";
 import Kundensuche from "./Pages/Kundensuche";
 import MitarbeiterOverview from "./Pages/Mitarbeiter/Overview";
 import Profile from "./Pages/Profile";
+import Seriennummern from "./Pages/Seriennummern";
 import Versand from "./Pages/Versand";
 import Warenlieferung from "./Pages/Warenlieferung";
 
@@ -95,7 +96,7 @@ createRoot(document.getElementById("root")!).render(
             </Route>
           </Route>
           <Route path="SN">
-            <Route index element={<>SN</>} />
+            <Route index element={<Seriennummern />} />
           </Route>
           <Route path="Info">
             <Route index element={<Info />} />

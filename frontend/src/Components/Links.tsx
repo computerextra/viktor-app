@@ -39,7 +39,7 @@ const NavLinks = [
   },
   {
     href: "/SN",
-    name: "SN (NYI)",
+    name: "SN",
   },
   {
     href: "/Info",
