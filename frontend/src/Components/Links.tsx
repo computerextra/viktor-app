@@ -15,11 +15,11 @@ const NavLinks = [
   },
   {
     href: "/Lieferanten",
-    name: "Lieferanten",
+    name: "Lieferanten (NYI)",
   },
   {
     href: "/Formulare",
-    name: "Formulare",
+    name: "Formulare (NYI)",
   },
   {
     href: "/Archiv",
@@ -39,7 +39,7 @@ const NavLinks = [
   },
   {
     href: "/SN",
-    name: "SN",
+    name: "SN (NYI)",
   },
   {
     href: "/Info",
@@ -47,11 +47,11 @@ const NavLinks = [
   },
   {
     href: "/Label",
-    name: "Label",
+    name: "Label (NYI)",
   },
   {
     href: "/Aussteller",
-    name: "Aussteller",
+    name: "Aussteller (NYI)",
   },
   {
     href: "/Versand",
