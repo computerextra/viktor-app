@@ -43,7 +43,27 @@ export function AdminPage({ children }: { children?: React.ReactElement }) {
   const admin = useAdmin();
 
   if (loggedIn && admin) return <div>{children}</div>;
-  return <></>;
+  if (loggedIn)
+    return (
+      <div className="panel">
+        <div className="panel-label">Keine Rechte</div>
+        <div className="p-1 mt-2">
+          <h2 className="text-center">
+            Keine passenden Rechte für diese Seite.
+          </h2>
+        </div>
+      </div>
+    );
+  return (
+    <div className="panel">
+      <div className="panel-label">Nicht Angemeldet</div>
+      <div className="p1 mt-2">
+        <h2 className="text-center">
+          Diese Seite steht nur angemeldeten Benutzern zur Verfügung
+        </h2>
+      </div>
+    </div>
+  );
 }
 
 export function SignedOut({ children }: { children?: React.ReactElement }) {
