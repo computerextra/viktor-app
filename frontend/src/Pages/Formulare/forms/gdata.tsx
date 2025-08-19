@@ -15,6 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { GenerateGdata } from "@/wailsjs/go/main/App";
+import type { main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -30,7 +32,6 @@ const Versions = [
 ];
 
 const formSchema = z.object({
-  Kundennummer: z.string(),
   Benutzername: z.string(),
   Passwort: z.string(),
   Benutzer: z.number().min(1),
@@ -44,24 +45,27 @@ export default function Gdata() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const props: main.GDataProps = {
+      Anwendung: values.Version,
+      Benutzer: values.Benutzer,
+      Benutzername: values.Benutzername,
+      Lizenz: values.Lizenz,
+      Passwort: values.Passwort,
+    };
+
+    const res = await GenerateGdata(props);
+    if (res) {
+      form.reset({
+        Benutzer: 0,
+        Benutzername: "",
+        Lizenz: "",
+        Passwort: "",
+      });
+    }
   };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="Kundennummer"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Kundennummer</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
           name="Benutzername"

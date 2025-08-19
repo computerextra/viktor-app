@@ -8,6 +8,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { GenerateMicrosoft } from "@/wailsjs/go/main/App";
+import type { main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -26,7 +28,25 @@ export default function Microsoft() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const props: main.MicrosoftProps = {
+      Benutzername: values.Benutzername,
+      Email: values.Mail,
+      Kundennummer: values.Kundennummer,
+      Mobil: values.Mobil,
+      Passwort: values.Passwort,
+    };
+
+    const res = await GenerateMicrosoft(props);
+
+    if (res) {
+      form.reset({
+        Benutzername: "",
+        Mail: "",
+        Kundennummer: "",
+        Mobil: "",
+        Passwort: "",
+      });
+    }
   };
   return (
     <Form {...form}>

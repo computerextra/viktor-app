@@ -8,7 +8,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { GenerateAomeiPdf } from "@/wailsjs/go/main/App";
+import { GenerateAomei } from "@/wailsjs/go/main/App";
+import type { main } from "@/wailsjs/go/models";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -24,7 +26,11 @@ export function Aomei() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const res = await GenerateAomeiPdf(values);
+    const props: main.AoemeiProps = {
+      Gerätenummer: values.Gerätenummer,
+      Lizenz: values.Lizenz,
+    };
+    const res = await GenerateAomei(props);
     if (res) {
       form.reset({
         Gerätenummer: "",

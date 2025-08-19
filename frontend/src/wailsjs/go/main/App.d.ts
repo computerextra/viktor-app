@@ -39,7 +39,17 @@ export function DeletePartner(arg1:string):Promise<boolean>;
 
 export function DeleteProfile():Promise<boolean>;
 
-export function GenerateAomeiPdf(arg1:main.AomeiProps):Promise<boolean>;
+export function GenerateAomei(arg1:main.AoemeiProps):Promise<boolean>;
+
+export function GenerateApple(arg1:main.AppleProps):Promise<boolean>;
+
+export function GenerateGdata(arg1:main.GDataProps):Promise<boolean>;
+
+export function GenerateGoogle(arg1:main.GoogleProps):Promise<boolean>;
+
+export function GenerateMicrosoft(arg1:main.MicrosoftProps):Promise<boolean>;
+
+export function GenerateTelekom(arg1:main.TelekomProps):Promise<boolean>;
 
 export function GenerateWarenlieferung():Promise<void>;
 

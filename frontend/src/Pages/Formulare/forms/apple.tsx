@@ -8,6 +8,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { GenerateApple } from "@/wailsjs/go/main/App";
+import type { main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -24,8 +26,21 @@ export default function Apple() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const props: main.AppleProps = {
+      Benutzername: values.Benutzername,
+      Kundennummer: values.Kundennummer,
+      Passwort: values.Passwort,
+    };
+    const res = await GenerateApple(props);
+    if (res) {
+      form.reset({
+        Kundennummer: "",
+        Benutzername: "",
+        Passwort: "",
+      });
+    }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

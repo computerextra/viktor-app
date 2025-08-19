@@ -11,6 +11,9 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+//go:embed all:images
+var images embed.FS
+
 const VERSION = 0.1
 
 func main() {

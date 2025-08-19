@@ -525,18 +525,34 @@ export namespace main {
 	        this.LieferantenId = source["LieferantenId"];
 	    }
 	}
-	export class AomeiProps {
+	export class AoemeiProps {
 	    Lizenz: string;
 	    "Gerätenummer": string;
 	
 	    static createFrom(source: any = {}) {
-	        return new AomeiProps(source);
+	        return new AoemeiProps(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.Lizenz = source["Lizenz"];
 	        this["Gerätenummer"] = source["Gerätenummer"];
+	    }
+	}
+	export class AppleProps {
+	    Kundennummer: string;
+	    Benutzername: string;
+	    Passwort: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AppleProps(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Kundennummer = source["Kundennummer"];
+	        this.Benutzername = source["Benutzername"];
+	        this.Passwort = source["Passwort"];
 	    }
 	}
 	export class AusstellerProps {
@@ -611,6 +627,26 @@ export namespace main {
 	        this.Vorname = source["Vorname"];
 	    }
 	}
+	export class GDataProps {
+	    Benutzername: string;
+	    Passwort: string;
+	    Benutzer: number;
+	    Anwendung: string;
+	    Lizenz: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GDataProps(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Benutzername = source["Benutzername"];
+	        this.Passwort = source["Passwort"];
+	        this.Benutzer = source["Benutzer"];
+	        this.Anwendung = source["Anwendung"];
+	        this.Lizenz = source["Lizenz"];
+	    }
+	}
 	export class Geburtstag {
 	    Name: string;
 	    Diff: number;
@@ -679,6 +715,22 @@ export namespace main {
 		    }
 		    return a;
 		}
+	}
+	export class GoogleProps {
+	    Kundennummer: string;
+	    Benutzername: string;
+	    Passwort: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GoogleProps(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Kundennummer = source["Kundennummer"];
+	        this.Benutzername = source["Benutzername"];
+	        this.Passwort = source["Passwort"];
+	    }
 	}
 	export class InfoProps {
 	    Mail: string;
@@ -792,6 +844,26 @@ export namespace main {
 		    return a;
 		}
 	}
+	export class MicrosoftProps {
+	    Kundennummer: string;
+	    Benutzername: string;
+	    Passwort: string;
+	    Email: string;
+	    Mobil: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new MicrosoftProps(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Kundennummer = source["Kundennummer"];
+	        this.Benutzername = source["Benutzername"];
+	        this.Passwort = source["Passwort"];
+	        this.Email = source["Email"];
+	        this.Mobil = source["Mobil"];
+	    }
+	}
 	export class MitarbeiterProps {
 	    Name: string;
 	    Image: boolean;
@@ -860,6 +932,30 @@ export namespace main {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.Search = source["Search"];
+	    }
+	}
+	export class TelekomProps {
+	    Kundennummer: string;
+	    Benutzername: string;
+	    Passwort: string;
+	    Mobil: string;
+	    Geburtstag: string;
+	    Sicherheitsfrage: string;
+	    Antwort: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new TelekomProps(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Kundennummer = source["Kundennummer"];
+	        this.Benutzername = source["Benutzername"];
+	        this.Passwort = source["Passwort"];
+	        this.Mobil = source["Mobil"];
+	        this.Geburtstag = source["Geburtstag"];
+	        this.Sicherheitsfrage = source["Sicherheitsfrage"];
+	        this.Antwort = source["Antwort"];
 	    }
 	}
 

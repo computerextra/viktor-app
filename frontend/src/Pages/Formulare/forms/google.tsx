@@ -8,6 +8,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { GenerateGoogle } from "@/wailsjs/go/main/App";
+import type { main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -24,7 +26,21 @@ export default function Google() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const props: main.GoogleProps = {
+      Benutzername: values.Benutzername,
+      Kundennummer: values.Kundennummer,
+      Passwort: values.Passwort,
+    };
+
+    const res = await GenerateGoogle(props);
+
+    if (res) {
+      form.reset({
+        Benutzername: "",
+        Kundennummer: "",
+        Passwort: "",
+      });
+    }
   };
   return (
     <Form {...form}>

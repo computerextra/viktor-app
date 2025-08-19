@@ -3,6 +3,7 @@ module viktor
 go 1.23
 
 require (
+	codeberg.org/go-pdf/fpdf v0.11.1
 	github.com/AndreiTelteu/wails-configstore v0.0.2
 	github.com/denisenkom/go-mssqldb v0.12.3
 	github.com/go-sql-driver/mysql v1.9.3

@@ -22,6 +22,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { GenerateTelekom } from "@/wailsjs/go/main/App";
+import type { main } from "@/wailsjs/go/models";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -67,7 +69,33 @@ export default function Telekom() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const props: main.TelekomProps = {
+      Antwort: values.Antwort,
+      Benutzername: values.Benutzername,
+      Geburtstag: values.Geburtstag.toLocaleDateString("de-de", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
+      Kundennummer: values.Kundennummer,
+      Mobil: values.Mobil,
+      Passwort: values.Passwort,
+      Sicherheitsfrage: values.Sicherheitsfrage,
+    };
+
+    const res = await GenerateTelekom(props);
+
+    if (res) {
+      form.reset({
+        Kundennummer: "",
+        Benutzername: "",
+        Passwort: "",
+        Mobil: "",
+        Geburtstag: undefined,
+        Sicherheitsfrage: "",
+        Antwort: "",
+      });
+    }
   };
   return (
     <Form {...form}>

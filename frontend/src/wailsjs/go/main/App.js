@@ -74,8 +74,28 @@ export function DeleteProfile() {
   return window['go']['main']['App']['DeleteProfile']();
 }
 
-export function GenerateAomeiPdf(arg1) {
-  return window['go']['main']['App']['GenerateAomeiPdf'](arg1);
+export function GenerateAomei(arg1) {
+  return window['go']['main']['App']['GenerateAomei'](arg1);
+}
+
+export function GenerateApple(arg1) {
+  return window['go']['main']['App']['GenerateApple'](arg1);
+}
+
+export function GenerateGdata(arg1) {
+  return window['go']['main']['App']['GenerateGdata'](arg1);
+}
+
+export function GenerateGoogle(arg1) {
+  return window['go']['main']['App']['GenerateGoogle'](arg1);
+}
+
+export function GenerateMicrosoft(arg1) {
+  return window['go']['main']['App']['GenerateMicrosoft'](arg1);
+}
+
+export function GenerateTelekom(arg1) {
+  return window['go']['main']['App']['GenerateTelekom'](arg1);
 }
 
 export function GenerateWarenlieferung() {
