@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 14. Aug 2025 um 10:58
+-- Erstellungszeit: 19. Aug 2025 um 14:27
 -- Server-Version: 10.11.13-MariaDB-0ubuntu0.24.04.1-log
 -- PHP-Version: 7.4.33-nmm7
 
@@ -180,6 +180,19 @@ CREATE TABLE `Pdfs` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `Referenzen`
+--
+
+CREATE TABLE `Referenzen` (
+  `id` varchar(191) NOT NULL,
+  `Name` varchar(191) NOT NULL,
+  `Webseite` varchar(191) NOT NULL,
+  `Bild` varchar(191) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `Status`
 --
 
@@ -286,6 +299,12 @@ ALTER TABLE `Partner`
 -- Indizes für die Tabelle `Pdfs`
 --
 ALTER TABLE `Pdfs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indizes für die Tabelle `Referenzen`
+--
+ALTER TABLE `Referenzen`
   ADD PRIMARY KEY (`id`);
 
 --
