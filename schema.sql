@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 19. Aug 2025 um 14:27
+-- Erstellungszeit: 19. Aug 2025 um 14:39
 -- Server-Version: 10.11.13-MariaDB-0ubuntu0.24.04.1-log
 -- PHP-Version: 7.4.33-nmm7
 
@@ -187,7 +187,8 @@ CREATE TABLE `Referenzen` (
   `id` varchar(191) NOT NULL,
   `Name` varchar(191) NOT NULL,
   `Webseite` varchar(191) NOT NULL,
-  `Bild` varchar(191) NOT NULL
+  `Bild` varchar(191) NOT NULL,
+  `Online` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
